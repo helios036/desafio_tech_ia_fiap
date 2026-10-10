@@ -1,0 +1,16 @@
+# Dataset bruto (Olist, público no Kaggle) — não versionado, baixar separadamente.
+# Ver instruções de download no README.
+dados/
+
+# Configurações locais do Claude Code
+.claude/
+
+# Checkpoints e caches do Jupyter/Python
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+
+# Arquivos auxiliares gerados pelo Quarto
+/.quarto/
+*_files/
+*_cache/

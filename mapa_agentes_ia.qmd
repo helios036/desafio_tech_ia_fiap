@@ -1,0 +1,304 @@
+---
+title: "Mapa de Agentes de IA — Olist Intelligent Marketplace"
+subtitle: "Tech Challenge Fase 1 — Agentic AI"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    number-depth: 3
+    theme: cosmo
+    embed-resources: true
+    css: styles/report.css
+  pdf:
+    documentclass: article
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    number-depth: 3
+    mainfont: "Arial"
+    fontsize: 12pt
+    geometry: margin=2.5cm
+    pdf-engine: xelatex
+    include-in-header: styles/preamble.tex
+---
+
+## Contexto
+
+A análise exploratória do dataset Olist (`notebooks/analise_exploratoria.ipynb`) revelou sete
+sinais de negócio fortes o suficiente para justificar, com dados, a priorização de agentes de IA:
+
+1. **Atraso logístico é o maior driver de insatisfação, com relação dose-resposta clara.** A nota
+   média de review cai progressivamente conforme o atraso aumenta:
+
+   | Faixa de atraso | Pedidos | Nota média |
+   |---|---|---|
+   | No prazo / adiantado | 89.939 | 4,29 |
+   | Atraso leve (1-3 dias) | 1.856 | 3,29 |
+   | Atraso moderado (4-7 dias) | 1.756 | 2,10 |
+   | Atraso severo (8+ dias) | 2.797 | 1,70 |
+
+   Não é um efeito de limiar único — cada faixa adicional de atraso derruba a nota de forma
+   consistente, o que reforça que qualquer intervenção que reduza o atraso, mesmo que não o elimine
+   totalmente, já tem efeito direto mensurável na satisfação. O boxplot de atraso por nota reforça essa
+   leitura de outra forma: **apenas na nota 1 o terceiro quartil (Q3) do atraso é positivo (+6 dias)** —
+   ou seja, só entre quem deu nota 1 existe uma parcela relevante (25%+) que de fato recebeu o pedido
+   atrasado; nas notas 2 a 5, mesmo no pior quartil a entrega ainda ocorre antes do prazo, sinalizando
+   que, para notas intermediárias, outros fatores (além do atraso) também pesam na insatisfação.
+
+   *Nota metodológica:* a nota de review é uma variável **ordinal** (1 a 5), não contínua, então a
+   correlação de Pearson (-0,27) não é a métrica mais adequada — ela assume distância igual entre
+   categorias. Recalculando com **Spearman** (baseada em ranks, correta para dado ordinal e robusta a
+   outliers), a correlação é de **-0,18**: mais moderada, mas confirma a mesma direção e reforça que a
+   tabela de faixas acima — e não um coeficiente único — é a evidência mais honesta da relação.
+2. **O problema concentra-se geograficamente e em operações interestaduais.** Estados como AL, MA,
+   SE, PI e CE têm taxa de atraso 2-3x acima da média (6,8%); entregas entre estados diferentes
+   atrasam quase o dobro das intraestaduais (7,8% vs 4,4%).
+3. **A base de vendedores é extremamente concentrada e heterogênea.** Os 10% maiores vendedores
+   (309 de 3.095) respondem por 67,5% da receita, e alguns vendedores com volume relevante chegam a
+   27-50% de taxa de atraso — um risco operacional e de marca que hoje não é monitorado de forma ativa.
+4. **Existe um volume relevante de texto não estruturado já sendo gerado pelo cliente.** 41,3% dos
+   reviews trazem comentário escrito, e 14,7% das notas são negativas (~14,6 mil reviews) — um volume
+   grande demais para triagem manual, mas pequeno demais (e repetitivo o suficiente) para não ser
+   automatizável com IA Generativa.
+5. **O tempo total de entrega pesa mais na nota do que o cumprimento da promessa de prazo.** Uma
+   análise multivariada comparando a força de associação (Spearman) de 12 variáveis com a nota de
+   review mostra que `delivery_days` (tempo total compra→cliente, -0,234) tem associação **mais forte**
+   do que `delay_days` (desvio do prazo prometido, -0,176). Em seguida aparecem nº de itens no pedido
+   (-0,108), valor do frete (-0,089) e entrega no mesmo estado do vendedor (+0,060). Preço, parcelamento,
+   peso do produto e qualidade do anúncio (fotos/descrição) têm efeito desprezível (|Spearman| < 0,03).
+   Isso é um achado prático importante: **reduzir o tempo absoluto de espera importa tanto ou mais do
+   que apenas "cumprir o prometido"** — um pedido que chega dentro do prazo mas demora muito ainda
+   machuca a satisfação.
+6. **A Olist estima prazos de entrega de forma muito conservadora.** O boxplot do desvio entre a
+   data prometida e a data real mostra mediana de **-12 dias** — ou seja, metade dos pedidos chega
+   12 dias ou mais *antes* do prazo informado ao cliente (P75 = -7 dias; P90 = -2 dias). A taxa real
+   de atraso é de apenas 6,8%, mas a promessa de prazo é folgada o suficiente para, possivelmente,
+   reduzir conversão (prazos longos demais no checkout) sem necessidade — um ponto de melhoria
+   independente da redução de atraso em si.
+7. **A taxa de atraso dispara em picos sazonais de demanda, não é constante ao longo do ano.** A
+   série mensal de pedidos atrasados mostra que a operação não escala bem com picos de volume:
+   **nov/2017 (Black Friday)** teve o maior volume de vendas do período (R$ 1,01 milhão, 7.451
+   pedidos) e taxa de atraso de **12,4%** — quase o dobro da média geral (6,8%). Fev/2018 (14,1%) e,
+   principalmente, **mar/2018 (19,0%)** foram os piores meses de toda a série. Ou seja, o risco de
+   atraso não depende só de rota/vendedor — depende de **quando** o pedido é feito, e a operação
+   logística atual não absorve bem picos de demanda.
+
+Esses sete sinais mapeiam diretamente para os desafios de negócio citados pela Olist (experiência do
+cliente, eficiência logística, retenção, análise de reviews, apoio à decisão) e orientam a escolha dos
+agentes propostos abaixo.
+
+## Visão geral dos agentes propostos
+
+| # | Agente | Dor de negócio endereçada | Usuário principal |
+|---|--------|---------------------------|--------------------|
+| 1 | Inteligência de Reviews | 14,7% de notas negativas, triagem manual inviável | CX / Qualidade |
+| 2 | Risco de Entrega | Atraso é o maior driver de insatisfação | Logística / Operações |
+| 3 | Performance de Vendedores | Concentração de receita + atraso desigual entre sellers | Marketplace / Seller Success |
+| 4 | Atendimento ao Cliente | Volume de pedidos (~100 mil) gera alto custo de suporte | Atendimento ao Cliente |
+
+: Visão geral dos agentes propostos {tbl-colwidths="[6,22,48,24]"}
+
+Os quatro agentes compartilham dados (pedidos, entregas, reviews) e se complementam: o Agente de Risco
+de Entrega alimenta o Agente de Atendimento com previsões de atraso, e o Agente de Performance de
+Vendedores usa os mesmos sinais de atraso e nota para pontuar sellers. O detalhamento de cada um segue
+abaixo.
+
+## Detalhamento dos Agentes
+
+### Agente de Inteligência de Reviews
+
+**Objetivo**
+: Ler, classificar e resumir automaticamente os comentários de reviews — especialmente os negativos —
+  identificando causa raiz (atraso, produto, atendimento, preço) e gerando um resumo executivo
+  recorrente para a liderança de qualidade.
+
+**Problema resolvido**
+: Hoje ~14,6 mil reviews negativos por período analisado trazem comentário em texto livre, mas não há
+  como ler e categorizar esse volume manualmente de forma consistente. Problemas recorrentes (ex.:
+  atraso, divergência de produto) só são percebidos tarde, de forma reativa.
+
+**Dado que evidencia**
+: 14,7% de notas 1-2; 41,3% dos reviews com comentário; termos mais frequentes em reviews negativos —
+  "entrega", "prazo", "contato", "qualidade" — confirmando que atraso e comunicação dominam as queixas.
+
+**Usuários envolvidos**
+: Time de Qualidade/CX (consome os resumos), gestão de categorias e vendedores (recebe alertas sobre
+  problemas recorrentes por categoria/seller), diretoria (dashboard executivo de satisfação).
+
+**Benefício esperado**
+: Redução do tempo de identificação de problemas recorrentes, priorização de ações por causa raiz (e
+  não por volume de reclamações isolado), e insumo direto para negociar SLAs com vendedores/categorias
+  problemáticas (ex.: `office_furniture`, pior nota média do dataset).
+
+**Riscos**
+: Viés de classificação em linguagem informal/regional; necessidade de revisão humana antes de ações
+  automáticas contra vendedores; dados de review podem conter informações pessoais que exigem anonimização.
+
+### Agente de Risco de Entrega
+
+**Objetivo**
+: Estimar, no momento da compra ou do despacho, o tempo total de entrega esperado e a probabilidade
+  de atraso de um pedido com base em rota (estado origem/destino), vendedor, categoria, nº de itens,
+  **época do ano/volume de demanda** e histórico — gerando (a) alertas proativos para operações e
+  cliente e (b) uma data estimada de entrega mais precisa, dinâmica e curta do que a praticada hoje.
+  O foco não é só "evitar quebrar a promessa", mas **reduzir o tempo total de espera**, que pesa mais
+  na satisfação do que o atraso em si.
+
+**Problema resolvido**
+: Atrasos hoje são descobertos pelo cliente (e pela Olist) somente quando já ocorreram, sem mecanismo
+  preditivo. Isso transforma um problema operacional evitável em um problema de satisfação já
+  consumado — a nota cai de forma consistente conforme o atraso aumenta (4,29 → 3,29 → 2,10 → 1,70).
+  Mais relevante ainda: a análise multivariada mostra que o tempo total de entrega (`delivery_days`)
+  está mais associado à nota (Spearman -0,234) do que o desvio em relação ao prazo prometido
+  (`delay_days`, -0,176) — ou seja, otimizar apenas para "não atrasar" deixa valor na mesa. Pedidos com
+  mais itens (-0,108) e frete mais caro (-0,089) agravam o problema. Adicionalmente, o prazo hoje
+  comunicado ao cliente é folgado demais (mediana de 12 dias de margem), o que pode custar conversão
+  no checkout sem necessidade. A operação também não escala bem em picos sazonais: a taxa de atraso
+  subiu para 12,4% em nov/2017 (Black Friday, maior volume do período) e chegou a 19,0% em mar/2018 —
+  quase 3x a média geral — mostrando que o risco de atraso depende também de **quando** o pedido é
+  feito, não só de rota e vendedor.
+
+**Dado que evidencia**
+: Taxa de atraso média de 6,8% (10,6 dias de atraso médio quando ocorre); concentração em estados
+  específicos (AL 21,4%, MA 17,4%, SE 15,2%); entregas interestaduais com quase o dobro da taxa de
+  atraso e do tempo médio de entrega das intraestaduais. Tempo de entrega com mediana de 10 dias mas
+  P90 de 23 dias (cauda longa de outliers); desvio do prazo estimado com mediana de -12 dias,
+  evidenciando folga sistemática na promessa de prazo. Correlação de Spearman com a nota: delivery_days
+  -0,234 (mais forte), delay_days -0,176, nº de itens -0,108, frete -0,089, mesmo estado +0,060. Série
+  mensal: taxa de atraso de 12,4% em nov/2017 e 19,0% em mar/2018, vs. média geral de 6,8%.
+
+**Usuários envolvidos**
+: Time de Logística/Operações (prioriza pedidos de alto risco), Atendimento ao Cliente (recebe o sinal
+  para comunicação proativa), Time Comercial/Produto (ajusta a promessa de prazo no checkout),
+  cliente final (notificação antecipada em vez de surpresa negativa, e prazo mais realista na compra).
+
+**Benefício esperado**
+: Redução de reviews negativos associados a atraso via comunicação proativa e priorização operacional;
+  possibilidade de renegociar rota/transportadora nas combinações estado-origem × estado-destino de
+  maior risco antes que o atraso se concretize; e ganho potencial de conversão ao comunicar prazos de
+  entrega mais curtos e precisos (sem abrir mão de margem de segurança) nas rotas de baixo risco.
+
+**Riscos**
+: Qualidade da previsão depende de dados históricos representativos; falsos positivos podem gerar
+  comunicação desnecessária e desgastar a confiança do cliente no alerta.
+
+### Agente de Performance de Vendedores
+
+**Modelo vs. agente — uma distinção importante**
+: Calcular taxa de atraso, nota média e um score de risco por vendedor é **analítica/ML tradicional**
+  (uma regra ponderada ou um classificador treinado) — isso, sozinho, não é um agente de IA. A camada
+  **agêntica** começa depois do score: é o componente que lê os comentários de review daquele vendedor
+  (dado não estruturado), diagnostica a causa provável em linguagem natural, decide qual ação recomendar
+  dentre um conjunto de opções, e redige essa recomendação para um humano aprovar. Ou seja: o
+  score/modelo é uma **ferramenta que o agente consulta**, não o agente em si.
+
+  ```
+  [Modelo/score de risco do vendedor] ──dado──► [Agente de Performance de Vendedores]
+                                                    │
+                                                    ├─ lê reviews do vendedor (texto livre)
+                                                    ├─ diagnostica causa provável
+                                                    └─ decide/redige recomendação de ação
+  ```
+
+**Objetivo**
+: Consolidar, por vendedor, indicadores de atraso, nota média de review e volume num score de risco;
+  diagnosticar a causa provável do problema a partir dos comentários de review ligados a esse vendedor;
+  e gerar uma recomendação de ação executiva (treinamento, plano de melhoria, suspensão de categorias,
+  revisão de parceria) para aprovação humana.
+
+**Problema resolvido**
+: A base de vendedores é muito concentrada e desigual — não há hoje um mecanismo sistemático e
+  contínuo de monitoramento que separe os vendedores estruturalmente problemáticos dos pontualmente
+  problemáticos, nem um processo que traduza "esse vendedor está mal" em uma ação concreta e justificada.
+
+**Dado que evidencia**
+: Os 10% maiores vendedores (309 de 3.095) geram 67,5% da receita; entre vendedores com volume
+  relevante (≥20 pedidos), vários apresentam taxa de atraso entre 27% e 50%, muito acima da média
+  geral de 6,8%.
+
+**Exemplo concreto (dado real do dataset)**
+: Um vendedor com 25 pedidos entregues e 50% de taxa de atraso geraria uma saída como: *"Vendedor
+  [id] — Risco: CRÍTICO. 25 pedidos nos últimos 90 dias, 50% com atraso (vs. 6,8% da média geral).
+  Causa provável nos comentários: atrasos recorrentes, clientes relatam falta de contato.
+  Recomendação: suspender de categorias de alto volume + notificar plano de melhoria em 15 dias."*
+
+**O que acontece com essa informação — importante: não vai direto ao cliente**
+: O agente **não alerta o cliente diretamente** sobre o histórico do vendedor — isso corroeria a
+  confiança no marketplace como um todo, e não ajuda quem já comprou. A saída segue dois caminhos:
+  (1) o score e a recomendação vão para o time de **Seller Success**, que decide a ação de gestão
+  (humano no circuito); (2) o score de risco do vendedor também é usado como **sinal de entrada do
+  Agente de Risco de Entrega (Agente 2)** — assim, um pedido futuro feito com um vendedor já sinalizado
+  nasce com risco mais alto na previsão, e é o Agente 2 (não o Agente 3) quem decide se vale comunicar
+  proativamente o cliente sobre aquele pedido específico.
+
+**Usuários envolvidos**
+: Time de Marketplace/Seller Success (gestão de relacionamento com vendedores), Operações (decisões de
+  priorização logística), diretoria comercial (decisões de retenção/desligamento de parceiros), Agente
+  de Risco de Entrega (consumidor do score como sinal preditivo, não usuário humano).
+
+**Benefício esperado**
+: Ação direcionada aos vendedores de maior risco antes que impactem a experiência de um volume maior de
+  clientes; input objetivo e baseado em dados para negociações comerciais e planos de melhoria; e
+  previsões de atraso mais precisas no Agente 2 ao incorporar o histórico do vendedor.
+
+**Riscos**
+: Necessário considerar efeitos de sazonalidade e volume baixo (ex.: 1 pedido atrasado em 4 gera 25%
+  de taxa de atraso) para não penalizar injustamente vendedores pequenos; governança clara sobre quais
+  ações podem ser automatizadas vs. precisam de aprovação humana; viés de causa-raiz se os comentários
+  de review forem poucos ou ambíguos.
+
+### Agente de Atendimento ao Cliente
+
+**Objetivo**
+: Responder automaticamente às dúvidas mais frequentes do cliente sobre status de pedido, prazo de
+  entrega, política de troca/devolução e dados de pagamento, escalando para atendimento humano apenas
+  os casos que exigem julgamento.
+
+**Problema resolvido**
+: Com ~100 mil pedidos no período, a maior parte das interações de suporte provavelmente é repetitiva
+  e de baixa complexidade (status de entrega, prazo, forma de pagamento), consumindo capacidade humana
+  que poderia ser direcionada a casos mais complexos ou sensíveis.
+
+**Dado que evidencia**
+: 97% dos pedidos são efetivamente entregues (baixo volume de exceções "duras"), mas 6,8% chegam
+  atrasados e geram queda abrupta de satisfação — indicando um fluxo previsível e de alto volume de
+  perguntas sobre "cadê meu pedido".
+
+**Usuários envolvidos**
+: Cliente final (canal principal de interação), time de Atendimento ao Cliente (recebe apenas os casos
+  escalados), Logística (consome sinais do Agente de Risco de Entrega para enriquecer as respostas).
+
+**Benefício esperado**
+: Redução de custo e tempo de resposta no atendimento de baixa complexidade; experiência mais
+  consistente para o cliente; liberação da equipe humana para casos de maior criticidade (ex.: produto
+  errado, fraude, reclamações graves).
+
+**Riscos**
+: Necessidade de limites claros de escalonamento para evitar frustração em casos complexos;
+  consistência das respostas depende da qualidade e atualização da base de conhecimento/dados
+  conectados ao agente.
+
+## Como os agentes se conectam
+
+```
+Dados (pedidos, entregas, reviews, vendedores)
+        │
+        ├── Agente de Inteligência de Reviews ──► resumo/causa raiz ──► Qualidade/CX
+        │                                                              ──► Agente de Performance de Vendedores
+        │
+        ├── Agente de Performance de Vendedores ──► score de risco ──► Marketplace/Seller Success (ação de gestão)
+        │                                        └─► score de risco ──► Agente de Risco de Entrega (sinal preditivo)
+        │
+        └── Agente de Risco de Entrega ──► alerta ──► Agente de Atendimento ao Cliente ──► cliente final
+                                          └─ alerta ──► Logística/Operações
+```
+
+Ponto-chave do fluxo: **só o Agente de Risco de Entrega fala com o cliente** (via Agente de Atendimento).
+O Agente de Performance de Vendedores atua nos bastidores — gestão de vendedores e alimentação de sinal
+para o Agente 2 — nunca expondo ao cliente o histórico de um vendedor específico.
+
+A arquitetura conceitual completa (fontes de dados, entradas/saídas e interações) será detalhada em
+documento específico, a ser incorporado ao relatório executivo final.
+
