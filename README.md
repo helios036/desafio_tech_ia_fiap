@@ -6,9 +6,8 @@ Olist, propondo agentes de IA orientados a negócio a partir de análise de dado
 ## Estrutura do repositório
 
 ```
-├── TECH CHALLENGE AGENTIC AI - FASE 1.pdf   # enunciado oficial do desafio
 ├── mapa_agentes_ia.qmd                      # relatório executivo (Quarto — fonte única)
-├── mapa_agentes_ia.html / .pdf              # relatório renderizado
+├── mapa_agentes_ia.html                     # relatório renderizado (versionado)
 ├── notebooks/
 │   └── analise_exploratoria.ipynb           # análise exploratória do dataset Olist
 ├── styles/
@@ -16,6 +15,10 @@ Olist, propondo agentes de IA orientados a negócio a partir de análise de dado
 │   └── preamble.tex                         # ajustes da saída PDF
 └── dados/                                   # dataset bruto (NÃO versionado — ver abaixo)
 ```
+
+Não versionados (ver `.gitignore`): `TECH CHALLENGE AGENTIC AI - FASE 1.pdf` (enunciado do curso,
+material não distribuído no repo) e `mapa_agentes_ia.pdf` (artefato gerado — reproduza com
+`quarto render mapa_agentes_ia.qmd --to pdf`).
 
 ## Dataset
 
