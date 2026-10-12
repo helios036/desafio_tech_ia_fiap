@@ -89,7 +89,7 @@ Esses sete sinais mapeiam diretamente para os desafios de negócio citados pela 
 cliente, eficiência logística, retenção, análise de reviews, apoio à decisão) e orientam a escolha dos
 agentes propostos abaixo.
 
-## Visão geral dos agentes propostos
+## Mapa de Agentes de IA
 
 | # | Agente | Dor de negócio endereçada | Usuário principal |
 |---|--------|---------------------------|--------------------|
@@ -98,7 +98,7 @@ agentes propostos abaixo.
 | 3 | Performance de Vendedores | Concentração de receita + atraso desigual entre sellers | Marketplace / Seller Success |
 | 4 | Atendimento ao Cliente | Volume de pedidos (~100 mil) gera alto custo de suporte | Atendimento ao Cliente |
 
-: Visão geral dos agentes propostos {tbl-colwidths="[6,22,48,24]"}
+:Mapa de Agentes de IA {tbl-colwidths="[6,22,48,24]"}
 
 Os quatro agentes compartilham dados (pedidos, entregas, reviews) e se complementam: o Agente de Risco
 de Entrega alimenta o Agente de Atendimento com previsões de atraso, e o Agente de Performance de
