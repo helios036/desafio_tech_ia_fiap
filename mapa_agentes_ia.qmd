@@ -308,32 +308,22 @@ neste projeto. Os agentes possuem responsabilidades complementares e compartilha
                           │
                           ▼
                  ┌─────────────────────┐
-                 │     AGENTES DE IA   │
+                 │   4 AGENTES DE IA   │
                  └─────────────────────┘
                           │
-        ┌─────────────────┼─────────────────┐
+            ┌─────────────────┼─────────────────┐
         ▼                 ▼                 ▼
 ┌────────────────┐ ┌────────────────┐ ┌────────────────┐
 │ Inteligência   │ │ Performance de │ │ Risco de       │
 │ de Reviews     │ │ Vendedores     │ │ Entrega        │
-└───────┬────────┘ └───────┬────────┘ └───────┬────────┘
-        │                  │                  │
-        ▼                  ▼                  ▼
-┌───────────────┐  ┌────────────────┐  ┌────────────────┐
-│ Qualidade/CX  │  │ Seller Success │  │ Logística/     │
-└───────────────┘  │ / Marketplace  │  │ Operações      │
-                   └────────────────┘  └───────┬────────┘
-                                               │
-                                               ▼
-                                      ┌────────────────┐
-                                      │ Atendimento ao │
-                                      │ Cliente        │
-                                      └───────┬────────┘
-                                              │
-                                              ▼
-                                      ┌────────────────┐
-                                      │ Cliente final  │
-                                      └────────────────┘
+└────────────────┘ └────────────────┘ └────────────────┘
+                         │                 │
+                         │                 │
+                         ▼                 ▼
+                 ┌────────────────┐ ┌────────────────┐
+                 │ Atendimento ao │ │ Áreas de       │
+                 │ Cliente        │ │ negócio        │
+                 └────────────────┘ └────────────────┘
 
 
 ### Entradas, saídas e usuários
