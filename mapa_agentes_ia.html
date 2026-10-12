@@ -2360,7 +2360,7 @@ text-align: left;
 <tr class="odd">
 <td>1</td>
 <td>Inteligência de Reviews</td>
-<td>14,7% de notas negativas, triagem manual inviável</td>
+<td>14,7% de notas negativas, 14,7% das avaliações receberam notas 1 ou 2; 41,3% dos reviews contêm comentários escritos</td>
 <td>CX / Qualidade</td>
 </tr>
 <tr class="even">
@@ -2400,7 +2400,7 @@ No período analisado, aproximadamente 14,6 mil avaliações receberam notas 1 o
 </dd>
 <dt><strong>Dado que evidencia</strong></dt>
 <dd>
-14,7% de notas 1-2; 41,3% dos reviews com comentário; termos mais frequentes em reviews negativos — “entrega”, “prazo”, “contato”, “qualidade” — confirmando que atraso e comunicação dominam as queixas.
+14,7% das avaliações receberam notas 1 ou 2, e 41,3% dos reviews contêm comentários escritos. Entre os termos frequentes nos comentários negativos aparecem referências a entrega, prazo, contato e qualidade. Esses termos podem orientar a classificação inicial dos comentários, mas precisam ser interpretados no contexto de cada avaliação.
 </dd>
 <dt><strong>Usuários envolvidos</strong></dt>
 <dd>
@@ -2440,13 +2440,9 @@ Taxa de atraso média de 6,8% (10,6 dias de atraso médio quando ocorre); concen
 <dd>
 Time de Logística/Operações (prioriza pedidos de alto risco), Atendimento ao Cliente (recebe o sinal para comunicação proativa), Time Comercial/Produto (ajusta a promessa de prazo no checkout), cliente final (notificação antecipada em vez de surpresa negativa, e prazo mais realista na compra).
 </dd>
-<dt><strong>Benefício esperado</strong></dt>
-<dd>
-Potencial redução de avaliações negativas associadas a problemas de entrega, por meio de comunicação proativa e priorização operacional; identificação de rotas com maior risco para investigação e planejamento; e possibilidade de melhorar a precisão dos prazos comunicados ao cliente. Esses benefícios deverão ser validados após a implementação, com acompanhamento dos indicadores operacionais e de satisfação.
-</dd>
-<dd>
-Estimativa de prazo ou data de entrega, quando houver dados suficientes para calculá-la.
-</dd>
+</dl>
+<p><strong>Resultado esperado</strong> - Identificação do pedido. - Nível de risco: baixo, médio ou alto. - Principais fatores associados ao risco. - Ação preventiva recomendada. - Estimativa de prazo ou data de entrega, quando houver dados suficientes para calculá-la. - Indicação de quando é necessário acompanhamento humano.</p>
+<dl>
 <dt><strong>Riscos</strong></dt>
 <dd>
 Qualidade da previsão depende de dados históricos representativos; falsos positivos podem gerar comunicação desnecessária e desgastar a confiança do cliente no alerta. A previsão em tempo real dependerá da disponibilidade de dados operacionais atualizados, incluindo o status do pedido e os eventos de transporte. O dataset histórico permite identificar associações e orientar o desenvolvimento inicial, mas o desempenho preditivo deverá ser validado com dados não utilizados no treinamento e com acompanhamento na operação.
@@ -2471,7 +2467,7 @@ Consolidar, por vendedor, indicadores de atraso, nota média de review e volume 
 </dd>
 <dt><strong>Problema resolvido</strong></dt>
 <dd>
-A base de vendedores é muito concentrada e desigual — não há hoje um mecanismo sistemático e contínuo de monitoramento que separe os vendedores estruturalmente problemáticos dos pontualmente problemáticos, nem um processo que traduza “esse vendedor está mal” em uma ação concreta e justificada.
+A base de vendedores apresenta concentração de receita e diferenças relevantes nas taxas históricas de atraso. Esse cenário indica uma oportunidade para estruturar o monitoramento do risco operacional por vendedor, distinguindo sinais recorrentes de possíveis variações pontuais e traduzindo os indicadores em recomendações justificadas para avaliação humana.
 </dd>
 <dt><strong>Dado que evidencia</strong></dt>
 <dd>
@@ -2525,7 +2521,7 @@ Cliente final (canal principal de interação), time de Atendimento ao Cliente (
 </dd>
 <dt><strong>Benefício esperado</strong></dt>
 <dd>
-Redução de custo e tempo de resposta no atendimento de baixa complexidade; experiência mais consistente para o cliente; liberação da equipe humana para casos de maior criticidade (ex.: produto errado, fraude, reclamações graves).
+Potencial redução do tempo de resposta e do esforço dedicado a consultas recorrentes, além de maior consistência nas orientações ao cliente e disponibilidade da equipe humana para casos complexos. O impacto sobre custos, tempo de atendimento e volume de escalonamentos deverá ser medido após a implementação.
 </dd>
 <dt><strong>Riscos</strong></dt>
 <dd>
