@@ -219,10 +219,17 @@ abaixo.
   geral de 6,8%.
 
 **Exemplo ilustrativo baseado nos sinais observados no dataset**
-: Um vendedor com 25 pedidos entregues e 50% de taxa de atraso geraria uma saída como: *"Vendedor
-  [id] — Risco: CRÍTICO. 25 pedidos nos últimos 90 dias, 50% com atraso (vs. 6,8% da média geral).
-  Causa provável nos comentários: atrasos recorrentes, clientes relatam falta de contato.
-  Recomendação: suspender de categorias de alto volume + notificar plano de melhoria em 15 dias."*
+
+Um vendedor com volume relevante de pedidos e taxa de atraso
+significativamente acima da média poderia gerar uma saída como:
+
+*"Vendedor [id] — Risco: ALTO. A taxa de atraso está significativamente
+acima da média do marketplace. Os comentários disponíveis indicam
+possíveis problemas recorrentes relacionados à entrega e à comunicação.
+
+Recomendação: avaliar um plano de melhoria, investigar as possíveis
+causas dos atrasos e acompanhar a evolução dos indicadores antes
+de qualquer decisão comercial."*
 
 **O que acontece com essa informação — importante: não vai direto ao cliente**
 : O agente **não alerta o cliente diretamente** sobre o histórico do vendedor — isso corroeria a
