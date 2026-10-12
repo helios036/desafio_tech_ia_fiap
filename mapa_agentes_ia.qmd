@@ -29,7 +29,7 @@ format:
 A análise exploratória do dataset Olist (`notebooks/analise_exploratoria.ipynb`) revelou sete
 sinais de negócio fortes o suficiente para justificar, com dados, a priorização de agentes de IA:
 
-1.**Atraso logístico está associado à redução da satisfação dos clientes.** A nota média de review diminui
+1. **Atraso logístico está associado à redução da satisfação dos clientes.** A nota média de review diminui
 progressivamente conforme aumenta a faixa de atraso:
 
    | Faixa de atraso | Pedidos | Nota média |
@@ -66,7 +66,7 @@ reviews contêm comentários escritos, enquanto 14,7% das avaliações receberam
 mil avaliações). Esses dados indicam uma oportunidade para utilizar IA Generativa na classificação dos comentários
 e na identificação de padrões recorrentes. A viabilidade e o ganho em relação à triagem manual deverão ser avaliados na operação.
 5. **O tempo total de entrega pesa mais na nota do que o cumprimento da promessa de prazo.** Uma análise exploratória comparando,
-por meio da correlação de Spearman, a associação entre 12 variáveis e a nota de review indica que que `delivery_days` 
+por meio da correlação de Spearman, a associação entre 12 variáveis e a nota de review indica que`delivery_days` 
 (tempo total compra→cliente, -0,234) tem associação **mais forte**
    do que `delay_days` (desvio do prazo prometido, -0,176). Em seguida aparecem nº de itens no pedido
    (-0,108), valor do frete (-0,089) e entrega no mesmo estado do vendedor (+0,060). Preço, parcelamento,
@@ -372,7 +372,7 @@ produzidos podem ser compartilhados entre agentes ou direcionados diretamente à
 │ Atendimento │ Gestão de Categorias │ Produto/Comercial │ Diretoria │
 │ Cliente final                                                   │
 └─────────────────────────────────────────────────────────────────────┘
-```text
+```
 
 * Fonte complementar proposta para uma implementação real; não faz parte do dataset público analisado.
 
