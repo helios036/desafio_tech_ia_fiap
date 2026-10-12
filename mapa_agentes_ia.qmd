@@ -280,9 +280,77 @@ abaixo.
   consistência das respostas depende da qualidade e atualização da base de conhecimento/dados
   conectados ao agente.
 
+
+## Arquitetura Conceitual
+
+A arquitetura conceitual proposta integra as principais fontes de dados da Olist aos quatro agentes de IA definidos neste projeto. Os agentes possuem
+responsabilidades complementares e compartilham informações para apoiar as áreas de negócio.
+
+### Fontes de dados
+
+- Pedidos e status operacionais
+- Clientes e localização
+- Produtos e categorias
+- Pagamentos
+- Entregas e prazos
+- Reviews e avaliações
+- Vendedores
+- Geolocalização
+
+
+### Fluxo conceitual
+
+                    FONTES DE DADOS
+┌──────────────────────────────────────────────────────┐
+│ Pedidos │ Clientes │ Produtos │ Pagamentos           │
+│ Entregas │ Reviews │ Vendedores │ Geolocalização    │
+└─────────────────────────┬────────────────────────────┘
+                          │
+                          ▼
+                 ┌─────────────────────┐
+                 │     AGENTES DE IA   │
+                 └─────────────────────┘
+                          │
+        ┌─────────────────┼─────────────────┐
+        ▼                 ▼                 ▼
+┌────────────────┐ ┌────────────────┐ ┌────────────────┐
+│ Inteligência   │ │ Performance de │ │ Risco de       │
+│ de Reviews     │ │ Vendedores     │ │ Entrega        │
+└───────┬────────┘ └───────┬────────┘ └───────┬────────┘
+        │                  │                  │
+        ▼                  ▼                  ▼
+┌───────────────┐  ┌────────────────┐  ┌────────────────┐
+│ Qualidade/CX  │  │ Seller Success │  │ Logística/     │
+└───────────────┘  │ / Marketplace  │  │ Operações      │
+                   └────────────────┘  └───────┬────────┘
+                                               │
+                                               ▼
+                                      ┌────────────────┐
+                                      │ Atendimento ao │
+                                      │ Cliente        │
+                                      └───────┬────────┘
+                                              │
+                                              ▼
+                                      ┌────────────────┐
+                                      │ Cliente final  │
+                                      └────────────────┘
+
+
+### Entradas, saídas e usuários
+
+A tabela a seguir apresenta, em visão executiva, as principais informações recebidas e produzidas por cada agente e as áreas que utilizam seus resultados.
+
+| Agente | Entradas principais | Saídas principais | Usuários envolvidos |
+|---|---|---|---|
+| **Inteligência de Reviews** | Notas e comentários dos clientes; dados do pedido; produto; categoria; vendedor; informações de entrega | Classificação das causas de insatisfação; padrões recorrentes; resumos e alertas | Qualidade/CX; gestão de categorias; gestão de vendedores; diretoria |
+| **Risco de Entrega** | Origem e destino; vendedor; categoria; quantidade de itens; frete; prazo estimado; histórico de entregas; período do pedido | Nível de risco de atraso; fatores de risco; alertas preventivos; recomendação de ação | Logística; Operações; Atendimento ao Cliente |
+| **Performance de Vendedores** | Volume de pedidos; taxa de atraso; avaliações; comentários; histórico do vendedor; comparação com o marketplace | Sinais de risco operacional; possíveis causas; recomendações de melhoria | Seller Success; Marketplace; gestão de vendedores |
+| **Atendimento ao Cliente** | Pedido; status; prazo estimado; pagamento; produto; sinal de risco de entrega; políticas da Olist | Resposta contextualizada ao cliente; orientação; escalonamento para atendimento humano | Cliente final; Atendimento ao Cliente |
+
+
 ## Como os agentes se conectam
 
-```
+
 Dados (pedidos, entregas, reviews, vendedores)
         │
         ├── Agente de Inteligência de Reviews ──► resumo/causa raiz ──► Qualidade/CX
@@ -293,12 +361,11 @@ Dados (pedidos, entregas, reviews, vendedores)
         │
         └── Agente de Risco de Entrega ──► alerta ──► Agente de Atendimento ao Cliente ──► cliente final
                                           └─ alerta ──► Logística/Operações
-```
+
 
 Ponto-chave do fluxo: **só o Agente de Risco de Entrega fala com o cliente** (via Agente de Atendimento).
 O Agente de Performance de Vendedores atua nos bastidores — gestão de vendedores e alimentação de sinal
 para o Agente 2 — nunca expondo ao cliente o histórico de um vendedor específico.
 
-A arquitetura conceitual completa (fontes de dados, entradas/saídas e interações) será detalhada em
-documento específico, a ser incorporado ao relatório executivo final.
+
 
