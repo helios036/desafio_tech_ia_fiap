@@ -303,6 +303,16 @@ ou a redução de custos do atendimento.
   conectados ao agente.
 
 
+## Escopo e limitações da análise
+
+A análise utiliza dados históricos do marketplace Olist, referentes ao período de 2016 a 2018, com aproximadamente 99 mil pedidos.
+
+Os resultados identificam padrões e associações observados nesse conjunto de dados, mas não comprovam relações causais nem garantem que os mesmos comportamentos ocorram atualmente.
+
+As propostas de agentes apresentadas neste relatório representam uma visão conceitual. Sua implementação dependeria da validação dos dados disponíveis na operação, da avaliação de desempenho dos modelos utilizados e do acompanhamento dos indicadores após a implantação.
+
+Alguns benefícios, como redução de custos de atendimento, aumento de conversão ou diminuição de avaliações negativas, são hipóteses de negócio a serem validadas por meio de indicadores antes e depois da implementação.
+
 ## Arquitetura Conceitual
 
 A arquitetura conceitual proposta integra as principais fontes de dados da Olist aos quatro agentes de IA definidos
@@ -362,6 +372,7 @@ produzidos podem ser compartilhados entre agentes ou direcionados diretamente à
 │ Atendimento │ Gestão de Categorias │ Produto/Comercial │ Diretoria │
 │ Cliente final                                                   │
 └─────────────────────────────────────────────────────────────────────┘
+```text
 
 * Fonte complementar proposta para uma implementação real; não faz parte do dataset público analisado.
 
@@ -386,33 +397,25 @@ processo de decisão. As interações abaixo representam possibilidades de integ
 dependência obrigatória ou uma sequência fixa de execução.
 
 ```text
-                         ┌──────────────────────────┐
-                         │ Inteligência de Reviews   │
-                         └────────────┬─────────────┘
-                                      │
-                                      │ sinais sobre
-                                      │ problemas recorrentes
-                                      ▼
-                         ┌──────────────────────────┐
-                         │ Performance de           │
-                         │ Vendedores               │
-                         └────────────┬─────────────┘
-                                      │
-                                      │ sinal adicional
-                                      │ de risco
-                                      ▼
-                         ┌──────────────────────────┐
-                         │ Risco de Entrega         │
-                         └────────────┬─────────────┘
-                                      │
-                                      │ alerta / contexto
-                                      ▼
-                         ┌──────────────────────────┐
-                         │ Atendimento ao Cliente   │
-                         └────────────┬─────────────┘
-                                      │
-                                      ▼
-                              Cliente final
+                   ┌────────────────────────┐
+                   │    Fontes de dados     │
+                   └────────────┬───────────┘
+                                │
+             ┌──────────────────┼──────────────────┐
+             ▼                  ▼                  ▼
+     ┌───────────────┐  ┌────────────────┐  ┌─────────────────┐
+     │ Inteligência  │  │ Risco de       │  │ Performance de  │
+     │ de Reviews    │  │ Entrega        │  │ Vendedores      │
+     └───────┬───────┘  └───────┬────────┘  └────────┬────────┘
+             │                  │                    │
+             │                  ▼                    │
+             │         ┌─────────────────┐            │
+             └────────►│ Atendimento ao  │◄───────────┘
+                       │ Cliente         │
+                       └────────┬────────┘
+                                ▼
+                         Cliente final
+```
 
 
 ### Princípios de funcionamento da arquitetura
