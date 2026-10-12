@@ -218,7 +218,7 @@ abaixo.
   relevante (≥20 pedidos), vários apresentam taxa de atraso entre 27% e 50%, muito acima da média
   geral de 6,8%.
 
-**Exemplo concreto (dado real do dataset)**
+**Exemplo ilustrativo baseado nos sinais observados no dataset**
 : Um vendedor com 25 pedidos entregues e 50% de taxa de atraso geraria uma saída como: *"Vendedor
   [id] — Risco: CRÍTICO. 25 pedidos nos últimos 90 dias, 50% com atraso (vs. 6,8% da média geral).
   Causa provável nos comentários: atrasos recorrentes, clientes relatam falta de contato.
