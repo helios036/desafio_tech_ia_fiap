@@ -2241,13 +2241,19 @@ text-align: left;
   <li><a href="#agente-de-performance-de-vendedores" id="toc-agente-de-performance-de-vendedores" class="nav-link" data-scroll-target="#agente-de-performance-de-vendedores"><span class="header-section-number">3.3</span> Agente de Performance de Vendedores</a></li>
   <li><a href="#agente-de-atendimento-ao-cliente" id="toc-agente-de-atendimento-ao-cliente" class="nav-link" data-scroll-target="#agente-de-atendimento-ao-cliente"><span class="header-section-number">3.4</span> Agente de Atendimento ao Cliente</a></li>
   </ul></li>
-  <li><a href="#arquitetura-conceitual" id="toc-arquitetura-conceitual" class="nav-link" data-scroll-target="#arquitetura-conceitual"><span class="header-section-number">4</span> Arquitetura Conceitual</a>
+  <li><a href="#escopo-e-limitações-da-análise" id="toc-escopo-e-limitações-da-análise" class="nav-link" data-scroll-target="#escopo-e-limitações-da-análise"><span class="header-section-number">4</span> Escopo e limitações da análise</a></li>
+  <li><a href="#arquitetura-conceitual" id="toc-arquitetura-conceitual" class="nav-link" data-scroll-target="#arquitetura-conceitual"><span class="header-section-number">5</span> Arquitetura Conceitual</a>
   <ul class="collapse">
-  <li><a href="#fontes-de-dados" id="toc-fontes-de-dados" class="nav-link" data-scroll-target="#fontes-de-dados"><span class="header-section-number">4.1</span> Fontes de dados</a></li>
-  <li><a href="#fluxo-conceitual" id="toc-fluxo-conceitual" class="nav-link" data-scroll-target="#fluxo-conceitual"><span class="header-section-number">4.2</span> Fluxo conceitual</a></li>
-  <li><a href="#agente-de-risco-de-entrega-1" id="toc-agente-de-risco-de-entrega-1" class="nav-link" data-scroll-target="#agente-de-risco-de-entrega-1"><span class="header-section-number">4.3</span> Agente de Risco de Entrega</a></li>
-  <li><a href="#agente-de-performance-de-vendedores-1" id="toc-agente-de-performance-de-vendedores-1" class="nav-link" data-scroll-target="#agente-de-performance-de-vendedores-1"><span class="header-section-number">4.4</span> Agente de Performance de Vendedores</a></li>
-  <li><a href="#agente-de-atendimento-ao-cliente-1" id="toc-agente-de-atendimento-ao-cliente-1" class="nav-link" data-scroll-target="#agente-de-atendimento-ao-cliente-1"><span class="header-section-number">4.5</span> Agente de Atendimento ao Cliente</a></li>
+  <li><a href="#fontes-de-dados" id="toc-fontes-de-dados" class="nav-link" data-scroll-target="#fontes-de-dados"><span class="header-section-number">5.1</span> Fontes de dados</a></li>
+  <li><a href="#fluxo-conceitual" id="toc-fluxo-conceitual" class="nav-link" data-scroll-target="#fluxo-conceitual"><span class="header-section-number">5.2</span> Fluxo conceitual</a></li>
+  <li><a href="#princípios-de-funcionamento-da-arquitetura" id="toc-princípios-de-funcionamento-da-arquitetura" class="nav-link" data-scroll-target="#princípios-de-funcionamento-da-arquitetura"><span class="header-section-number">5.3</span> Princípios de funcionamento da arquitetura</a></li>
+  </ul></li>
+  <li><a href="#prompts-estruturados" id="toc-prompts-estruturados" class="nav-link" data-scroll-target="#prompts-estruturados"><span class="header-section-number">6</span> Prompts Estruturados</a>
+  <ul class="collapse">
+  <li><a href="#agente-de-inteligência-de-reviews-1" id="toc-agente-de-inteligência-de-reviews-1" class="nav-link" data-scroll-target="#agente-de-inteligência-de-reviews-1"><span class="header-section-number">6.1</span> Agente de Inteligência de Reviews</a></li>
+  <li><a href="#agente-de-risco-de-entrega-1" id="toc-agente-de-risco-de-entrega-1" class="nav-link" data-scroll-target="#agente-de-risco-de-entrega-1"><span class="header-section-number">6.2</span> Agente de Risco de Entrega</a></li>
+  <li><a href="#agente-de-performance-de-vendedores-1" id="toc-agente-de-performance-de-vendedores-1" class="nav-link" data-scroll-target="#agente-de-performance-de-vendedores-1"><span class="header-section-number">6.3</span> Agente de Performance de Vendedores</a></li>
+  <li><a href="#agente-de-atendimento-ao-cliente-1" id="toc-agente-de-atendimento-ao-cliente-1" class="nav-link" data-scroll-target="#agente-de-atendimento-ao-cliente-1"><span class="header-section-number">6.4</span> Agente de Atendimento ao Cliente</a></li>
   </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="mapa_agentes_ia.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
@@ -2516,12 +2522,19 @@ Necessidade de limites claros de escalonamento para evitar frustração em casos
 </dl>
 </section>
 </section>
-<section id="arquitetura-conceitual" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="arquitetura-conceitual"><span class="header-section-number">4</span> Arquitetura Conceitual</h2>
+<section id="escopo-e-limitações-da-análise" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="escopo-e-limitações-da-análise"><span class="header-section-number">4</span> Escopo e limitações da análise</h2>
+<p>A análise utiliza dados históricos do marketplace Olist, referentes ao período de 2016 a 2018, com aproximadamente 99 mil pedidos.</p>
+<p>Os resultados identificam padrões e associações observados nesse conjunto de dados, mas não comprovam relações causais nem garantem que os mesmos comportamentos ocorram atualmente.</p>
+<p>As propostas de agentes apresentadas neste relatório representam uma visão conceitual. Sua implementação dependeria da validação dos dados disponíveis na operação, da avaliação de desempenho dos modelos utilizados e do acompanhamento dos indicadores após a implantação.</p>
+<p>Alguns benefícios, como redução de custos de atendimento, aumento de conversão ou diminuição de avaliações negativas, são hipóteses de negócio a serem validadas por meio de indicadores antes e depois da implementação.</p>
+</section>
+<section id="arquitetura-conceitual" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="arquitetura-conceitual"><span class="header-section-number">5</span> Arquitetura Conceitual</h2>
 <p>A arquitetura conceitual proposta integra as principais fontes de dados da Olist aos quatro agentes de IA definidos neste projeto. Os agentes possuem responsabilidades complementares, atuam em diferentes frentes do negócio e podem compartilhar informações para apoiar decisões operacionais e estratégicas.</p>
 <p>A proposta está organizada em três camadas conceituais: <strong>fontes de dados</strong>, <strong>agentes de IA</strong> e <strong>áreas de negócio e usuários finais</strong>. Essa organização permite visualizar de forma executiva quais informações alimentam os agentes, quais resultados são produzidos e como esses resultados podem apoiar diferentes áreas da operação.</p>
-<section id="fontes-de-dados" class="level3" data-number="4.1">
-<h3 data-number="4.1" class="anchored" data-anchor-id="fontes-de-dados"><span class="header-section-number">4.1</span> Fontes de dados</h3>
+<section id="fontes-de-dados" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="fontes-de-dados"><span class="header-section-number">5.1</span> Fontes de dados</h3>
 <p>As fontes abaixo representam os principais conjuntos de informações utilizados pelos agentes propostos, com base nos dados disponíveis no dataset da Olist.</p>
 <ul>
 <li>Pedidos e status operacionais</li>
@@ -2535,8 +2548,8 @@ Necessidade de limites claros de escalonamento para evitar frustração em casos
 </ul>
 <p>Além dos dados históricos do dataset, uma implementação real poderia utilizar fontes operacionais complementares, como <strong>políticas de atendimento, regras de troca e devolução e base de conhecimento</strong>, especialmente para suportar o Agente de Atendimento ao Cliente. Essas fontes são propostas para a solução e <strong>não fazem parte do dataset público analisado neste projeto</strong>.</p>
 </section>
-<section id="fluxo-conceitual" class="level3" data-number="4.2">
-<h3 data-number="4.2" class="anchored" data-anchor-id="fluxo-conceitual"><span class="header-section-number">4.2</span> Fluxo conceitual</h3>
+<section id="fluxo-conceitual" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="fluxo-conceitual"><span class="header-section-number">5.2</span> Fluxo conceitual</h3>
 <p>A arquitetura apresenta os quatro agentes como componentes complementares da mesma camada de inteligência. Cada agente possui uma responsabilidade própria e pode consumir diferentes fontes de dados, enquanto os resultados produzidos podem ser compartilhados entre agentes ou direcionados diretamente às áreas de negócio.</p>
 <pre class="text"><code>┌─────────────────────────────────────────────────────────────────────┐
 │                         FONTES DE DADOS                             │
@@ -2561,6 +2574,7 @@ Necessidade de limites claros de escalonamento para evitar frustração em casos
 │ Atendimento │ Gestão de Categorias │ Produto/Comercial │ Diretoria │
 │ Cliente final                                                   │
 └─────────────────────────────────────────────────────────────────────┘
+```text
 
 * Fonte complementar proposta para uma implementação real; não faz parte do dataset público analisado.
 
@@ -2585,76 +2599,51 @@ processo de decisão. As interações abaixo representam possibilidades de integ
 dependência obrigatória ou uma sequência fixa de execução.
 
 ```text
-                         ┌──────────────────────────┐
-                         │ Inteligência de Reviews   │
-                         └────────────┬─────────────┘
-                                      │
-                                      │ sinais sobre
-                                      │ problemas recorrentes
-                                      ▼
-                         ┌──────────────────────────┐
-                         │ Performance de           │
-                         │ Vendedores               │
-                         └────────────┬─────────────┘
-                                      │
-                                      │ sinal adicional
-                                      │ de risco
-                                      ▼
-                         ┌──────────────────────────┐
-                         │ Risco de Entrega         │
-                         └────────────┬─────────────┘
-                                      │
-                                      │ alerta / contexto
-                                      ▼
-                         ┌──────────────────────────┐
-                         │ Atendimento ao Cliente   │
-                         └────────────┬─────────────┘
-                                      │
-                                      ▼
-                              Cliente final
-
-
-### Princípios de funcionamento da arquitetura
-
-A arquitetura foi concebida com foco em complementaridade entre os agentes, evitando dependências rígidas entre
-eles. Cada agente possui uma responsabilidade principal e pode gerar informações para diferentes áreas do negócio.
-
-As decisões e ações de maior impacto permanecem sujeitas à validação humana, especialmente em situações que envolvam
-reclamações críticas, exceções operacionais, políticas comerciais ou decisões que possam afetar diretamente a
-experiência do cliente ou o relacionamento com vendedores.
-
-O Agente de Atendimento ao Cliente deve utilizar informações atualizadas e fontes de conhecimento autorizadas,
-além de possuir critérios claros para escalonamento de situações que não possam ser resolvidas de forma segura ou
-adequada de maneira automatizada.
-
-
-## Prompts Estruturados
-
-Os prompts a seguir apresentam exemplos iniciais de instruções que
-poderiam ser utilizadas pelos agentes propostos, considerando seus
-objetivos de negócio, os dados disponíveis e os resultados esperados.
-
-### Agente de Inteligência de Reviews
-
-**Objetivo do prompt**
-
-Identificar os principais motivos de satisfação ou insatisfação dos
-clientes a partir das avaliações e comentários.
-
-**Contexto fornecido ao agente**
-
-- Nota da avaliação.
-- Comentário do cliente.
-- Dados do pedido.
-- Produto e categoria.
-- Vendedor.
-- Informações de entrega.
-- Data do pedido.
-
-**Instrução principal**
-
-```text
-Você é o Agente de Inteligência de Reviews da Olist.
+                   ┌────────────────────────┐
+                   │    Fontes de dados     │
+                   └────────────┬───────────┘
+                                │
+             ┌──────────────────┼──────────────────┐
+             ▼                  ▼                  ▼
+     ┌───────────────┐  ┌────────────────┐  ┌─────────────────┐
+     │ Inteligência  │  │ Risco de       │  │ Performance de  │
+     │ de Reviews    │  │ Entrega        │  │ Vendedores      │
+     └───────┬───────┘  └───────┬────────┘  └────────┬────────┘
+             │                  │                    │
+             │                  ▼                    │
+             │         ┌─────────────────┐            │
+             └────────►│ Atendimento ao  │◄───────────┘
+                       │ Cliente         │
+                       └────────┬────────┘
+                                ▼
+                         Cliente final</code></pre>
+</section>
+<section id="princípios-de-funcionamento-da-arquitetura" class="level3" data-number="5.3">
+<h3 data-number="5.3" class="anchored" data-anchor-id="princípios-de-funcionamento-da-arquitetura"><span class="header-section-number">5.3</span> Princípios de funcionamento da arquitetura</h3>
+<p>A arquitetura foi concebida com foco em complementaridade entre os agentes, evitando dependências rígidas entre eles. Cada agente possui uma responsabilidade principal e pode gerar informações para diferentes áreas do negócio.</p>
+<p>As decisões e ações de maior impacto permanecem sujeitas à validação humana, especialmente em situações que envolvam reclamações críticas, exceções operacionais, políticas comerciais ou decisões que possam afetar diretamente a experiência do cliente ou o relacionamento com vendedores.</p>
+<p>O Agente de Atendimento ao Cliente deve utilizar informações atualizadas e fontes de conhecimento autorizadas, além de possuir critérios claros para escalonamento de situações que não possam ser resolvidas de forma segura ou adequada de maneira automatizada.</p>
+</section>
+</section>
+<section id="prompts-estruturados" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="prompts-estruturados"><span class="header-section-number">6</span> Prompts Estruturados</h2>
+<p>Os prompts a seguir apresentam exemplos iniciais de instruções que poderiam ser utilizadas pelos agentes propostos, considerando seus objetivos de negócio, os dados disponíveis e os resultados esperados.</p>
+<section id="agente-de-inteligência-de-reviews-1" class="level3" data-number="6.1">
+<h3 data-number="6.1" class="anchored" data-anchor-id="agente-de-inteligência-de-reviews-1"><span class="header-section-number">6.1</span> Agente de Inteligência de Reviews</h3>
+<p><strong>Objetivo do prompt</strong></p>
+<p>Identificar os principais motivos de satisfação ou insatisfação dos clientes a partir das avaliações e comentários.</p>
+<p><strong>Contexto fornecido ao agente</strong></p>
+<ul>
+<li>Nota da avaliação.</li>
+<li>Comentário do cliente.</li>
+<li>Dados do pedido.</li>
+<li>Produto e categoria.</li>
+<li>Vendedor.</li>
+<li>Informações de entrega.</li>
+<li>Data do pedido.</li>
+</ul>
+<p><strong>Instrução principal</strong></p>
+<pre class="text"><code>Você é o Agente de Inteligência de Reviews da Olist.
 
 Analise os reviews fornecidos e identifique os principais motivos
 relacionados à satisfação ou insatisfação dos clientes.
@@ -2682,8 +2671,8 @@ para a experiência do cliente.</code></pre>
 <li>Sugestões de pontos que merecem investigação.</li>
 </ul>
 </section>
-<section id="agente-de-risco-de-entrega-1" class="level3" data-number="4.3">
-<h3 data-number="4.3" class="anchored" data-anchor-id="agente-de-risco-de-entrega-1"><span class="header-section-number">4.3</span> Agente de Risco de Entrega</h3>
+<section id="agente-de-risco-de-entrega-1" class="level3" data-number="6.2">
+<h3 data-number="6.2" class="anchored" data-anchor-id="agente-de-risco-de-entrega-1"><span class="header-section-number">6.2</span> Agente de Risco de Entrega</h3>
 <p><strong>Objetivo do prompt</strong></p>
 <p>Identificar pedidos com maior probabilidade de atraso e apoiar ações preventivas.</p>
 <p><strong>Contexto fornecido ao agente</strong></p>
@@ -2724,8 +2713,8 @@ como certeza.</code></pre>
 <li>Indicação de quando é necessário acompanhamento humano.</li>
 </ul>
 </section>
-<section id="agente-de-performance-de-vendedores-1" class="level3" data-number="4.4">
-<h3 data-number="4.4" class="anchored" data-anchor-id="agente-de-performance-de-vendedores-1"><span class="header-section-number">4.4</span> Agente de Performance de Vendedores</h3>
+<section id="agente-de-performance-de-vendedores-1" class="level3" data-number="6.3">
+<h3 data-number="6.3" class="anchored" data-anchor-id="agente-de-performance-de-vendedores-1"><span class="header-section-number">6.3</span> Agente de Performance de Vendedores</h3>
 <p><strong>Objetivo do prompt</strong></p>
 <p>Identificar vendedores com sinais relevantes de risco operacional e sugerir oportunidades de melhoria.</p>
 <p><strong>Contexto fornecido ao agente</strong></p>
@@ -2771,8 +2760,8 @@ classificação de risco como prova de falha do vendedor.</code></pre>
 <li>Indicação de necessidade de avaliação humana.</li>
 </ul>
 </section>
-<section id="agente-de-atendimento-ao-cliente-1" class="level3" data-number="4.5">
-<h3 data-number="4.5" class="anchored" data-anchor-id="agente-de-atendimento-ao-cliente-1"><span class="header-section-number">4.5</span> Agente de Atendimento ao Cliente</h3>
+<section id="agente-de-atendimento-ao-cliente-1" class="level3" data-number="6.4">
+<h3 data-number="6.4" class="anchored" data-anchor-id="agente-de-atendimento-ao-cliente-1"><span class="header-section-number">6.4</span> Agente de Atendimento ao Cliente</h3>
 <p><strong>Objetivo do prompt</strong></p>
 <p>Responder dúvidas relacionadas aos pedidos e encaminhar situações que exigem avaliação humana.</p>
 <p><strong>Contexto fornecido ao agente</strong></p>
