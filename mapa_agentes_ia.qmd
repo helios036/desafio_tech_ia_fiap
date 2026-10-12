@@ -291,9 +291,17 @@ de qualquer decisão comercial."*
 ## Arquitetura Conceitual
 
 A arquitetura conceitual proposta integra as principais fontes de dados da Olist aos quatro agentes de IA definidos
-neste projeto. Os agentes possuem responsabilidades complementares e compartilham informações para apoiar as áreas de negócio.
+neste projeto. Os agentes possuem responsabilidades complementares, atuam em diferentes frentes do negócio e
+podem compartilhar informações para apoiar decisões operacionais e estratégicas.
+
+A proposta está organizada em três camadas conceituais: **fontes de dados**, **agentes de IA** e **áreas de negócio
+e usuários finais**. Essa organização permite visualizar de forma executiva quais informações alimentam os agentes,
+quais resultados são produzidos e como esses resultados podem apoiar diferentes áreas da operação.
 
 ### Fontes de dados
+
+As fontes abaixo representam os principais conjuntos de informações utilizados pelos agentes propostos, com base
+nos dados disponíveis no dataset da Olist.
 
 - Pedidos e status operacionais
 - Clientes e localização
@@ -304,65 +312,108 @@ neste projeto. Os agentes possuem responsabilidades complementares e compartilha
 - Vendedores
 - Geolocalização
 
+Além dos dados históricos do dataset, uma implementação real poderia utilizar fontes operacionais complementares,
+como **políticas de atendimento, regras de troca e devolução e base de conhecimento**, especialmente para suportar
+o Agente de Atendimento ao Cliente. Essas fontes são propostas para a solução e **não fazem parte do dataset público
+analisado neste projeto**.
 
 ### Fluxo conceitual
 
-                    FONTES DE DADOS
-┌──────────────────────────────────────────────────────┐
-│ Pedidos │ Clientes │ Produtos │ Pagamentos           │
-│ Entregas │ Reviews │ Vendedores │ Geolocalização    │
-└─────────────────────────┬────────────────────────────┘
-                          │
-                          ▼
-                 ┌─────────────────────┐
-                 │   4 AGENTES DE IA   │
-                 └─────────────────────┘
-                          │
-            ┌─────────────────┼─────────────────┐
-        ▼                 ▼                 ▼
-┌────────────────┐ ┌────────────────┐ ┌────────────────┐
-│ Inteligência   │ │ Performance de │ │ Risco de       │
-│ de Reviews     │ │ Vendedores     │ │ Entrega        │
-└────────────────┘ └────────────────┘ └────────────────┘
-                         │                 │
-                         │                 │
-                         ▼                 ▼
-                 ┌────────────────┐ ┌────────────────┐
-                 │ Atendimento ao │ │ Áreas de       │
-                 │ Cliente        │ │ negócio        │
-                 └────────────────┘ └────────────────┘
+A arquitetura apresenta os quatro agentes como componentes complementares da mesma camada de inteligência. Cada
+agente possui uma responsabilidade própria e pode consumir diferentes fontes de dados, enquanto os resultados
+produzidos podem ser compartilhados entre agentes ou direcionados diretamente às áreas de negócio.
+
+```text
+┌─────────────────────────────────────────────────────────────────────┐
+│                         FONTES DE DADOS                             │
+├─────────────────────────────────────────────────────────────────────┤
+│ Pedidos │ Clientes │ Produtos │ Pagamentos │ Entregas │ Reviews    │
+│ Vendedores │ Geolocalização │ Base de conhecimento e políticas*   │
+└─────────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                         AGENTES DE IA                               │
+├──────────────────┬──────────────────┬──────────────────┬────────────┤
+│ Inteligência de  │ Risco de         │ Performance de   │ Atendimento│
+│ Reviews          │ Entrega          │ Vendedores       │ ao Cliente │
+└──────────────────┴──────────────────┴──────────────────┴────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                    ÁREAS E USUÁRIOS DO NEGÓCIO                      │
+├─────────────────────────────────────────────────────────────────────┤
+│ Qualidade/CX │ Logística/Operações │ Seller Success │ Marketplace  │
+│ Atendimento │ Gestão de Categorias │ Produto/Comercial │ Diretoria │
+│ Cliente final                                                   │
+└─────────────────────────────────────────────────────────────────────┘
+
+* Fonte complementar proposta para uma implementação real; não faz parte do dataset público analisado.
 
 
 ### Entradas, saídas e usuários
 
-A tabela a seguir apresenta, em visão executiva, as principais informações recebidas e produzidas por cada agente e as áreas que utilizam seus resultados.
+A tabela apresenta, em visão executiva, as principais informações recebidas e produzidas por cada agente e os
+usuários que podem utilizar seus resultados.
 
 | Agente | Entradas principais | Saídas principais | Usuários envolvidos |
 |---|---|---|---|
-| **Inteligência de Reviews** | Notas e comentários dos clientes; dados do pedido; produto; categoria; vendedor; informações de entrega | Classificação das causas de insatisfação; padrões recorrentes; resumos e alertas | Qualidade/CX; gestão de categorias; gestão de vendedores; diretoria |
-| **Risco de Entrega** | Origem e destino; vendedor; categoria; quantidade de itens; frete; prazo estimado; histórico de entregas; período do pedido | Nível de risco de atraso; fatores de risco; alertas preventivos; recomendação de ação | Logística; Operações; Atendimento ao Cliente |
-| **Performance de Vendedores** | Volume de pedidos; taxa de atraso; avaliações; comentários; histórico do vendedor; comparação com o marketplace | Sinais de risco operacional; possíveis causas; recomendações de melhoria | Seller Success; Marketplace; gestão de vendedores |
-| **Atendimento ao Cliente** | Pedido; status; prazo estimado; pagamento; produto; sinal de risco de entrega; políticas da Olist | Resposta contextualizada ao cliente; orientação; escalonamento para atendimento humano | Cliente final; Atendimento ao Cliente |
-
+| **Inteligência de Reviews** | Notas e comentários dos clientes; dados do pedido; produto; categoria; vendedor; informações de entrega | Classificação dos principais motivos de satisfação ou insatisfação; padrões recorrentes; resumos e alertas | Qualidade/CX; gestão de categorias; gestão de vendedores; diretoria |
+| **Risco de Entrega** | Origem e destino; vendedor; categoria; quantidade de itens; frete; prazo estimado; histórico de entregas; período do pedido | Nível de risco de atraso; fatores associados ao risco; alertas preventivos; recomendação de ação | Logística; Operações; Atendimento ao Cliente |
+| **Performance de Vendedores** | Volume de pedidos; taxa de atraso; avaliações; comentários; histórico do vendedor; comparação com o marketplace | Indicadores de performance; sinais de risco operacional; possíveis causas; recomendações de melhoria | Seller Success; Marketplace; gestão de vendedores |
+| **Atendimento ao Cliente** | Pedido; status; prazo estimado; pagamento; produto; sinais de risco de entrega; informações provenientes dos demais agentes; políticas e base de conhecimento | Resposta contextualizada ao cliente; orientação; identificação de casos críticos; escalonamento para atendimento humano | Cliente final; Atendimento ao Cliente |
 
 ## Como os agentes se conectam
 
 
-Dados (pedidos, entregas, reviews, vendedores)
-        │
-        ├── Agente de Inteligência de Reviews ──► resumo/causa raiz ──► Qualidade/CX
-        │                                                              ──► Agente de Performance de Vendedores
-        │
-        ├── Agente de Performance de Vendedores ──► score de risco ──► Marketplace/Seller Success (ação de gestão)
-        │                                        └─► score de risco ──► Agente de Risco de Entrega (sinal preditivo)
-        │
-        └── Agente de Risco de Entrega ──► alerta ──► Agente de Atendimento ao Cliente ──► cliente final
-                                          └─ alerta ──► Logística/Operações
+## Como os agentes se conectam
+
+Os agentes podem operar de forma complementar, compartilhando sinais e informações quando isso agregar valor ao
+processo de decisão. As interações abaixo representam possibilidades de integração entre os agentes, e não uma
+dependência obrigatória ou uma sequência fixa de execução.
+
+```text
+                         ┌──────────────────────────┐
+                         │ Inteligência de Reviews   │
+                         └────────────┬─────────────┘
+                                      │
+                                      │ sinais sobre
+                                      │ problemas recorrentes
+                                      ▼
+                         ┌──────────────────────────┐
+                         │ Performance de           │
+                         │ Vendedores               │
+                         └────────────┬─────────────┘
+                                      │
+                                      │ sinal adicional
+                                      │ de risco
+                                      ▼
+                         ┌──────────────────────────┐
+                         │ Risco de Entrega         │
+                         └────────────┬─────────────┘
+                                      │
+                                      │ alerta / contexto
+                                      ▼
+                         ┌──────────────────────────┐
+                         │ Atendimento ao Cliente   │
+                         └────────────┬─────────────┘
+                                      │
+                                      ▼
+                              Cliente final
 
 
-Ponto-chave do fluxo: **só o Agente de Risco de Entrega fala com o cliente** (via Agente de Atendimento).
-O Agente de Performance de Vendedores atua nos bastidores — gestão de vendedores e alimentação de sinal
-para o Agente 2 — nunca expondo ao cliente o histórico de um vendedor específico.
+### Princípios de funcionamento da arquitetura
+
+A arquitetura foi concebida com foco em complementaridade entre os agentes, evitando dependências rígidas entre
+eles. Cada agente possui uma responsabilidade principal e pode gerar informações para diferentes áreas do negócio.
+
+As decisões e ações de maior impacto permanecem sujeitas à validação humana, especialmente em situações que envolvam
+reclamações críticas, exceções operacionais, políticas comerciais ou decisões que possam afetar diretamente a
+experiência do cliente ou o relacionamento com vendedores.
+
+O Agente de Atendimento ao Cliente deve utilizar informações atualizadas e fontes de conhecimento autorizadas,
+além de possuir critérios claros para escalonamento de situações que não possam ser resolvidas de forma segura ou
+adequada de maneira automatizada.
 
 
 ## Prompts Estruturados
