@@ -2248,6 +2248,13 @@ text-align: left;
   <li><a href="#entradas-saídas-e-usuários" id="toc-entradas-saídas-e-usuários" class="nav-link" data-scroll-target="#entradas-saídas-e-usuários"><span class="header-section-number">4.3</span> Entradas, saídas e usuários</a></li>
   </ul></li>
   <li><a href="#como-os-agentes-se-conectam" id="toc-como-os-agentes-se-conectam" class="nav-link" data-scroll-target="#como-os-agentes-se-conectam"><span class="header-section-number">5</span> Como os agentes se conectam</a></li>
+  <li><a href="#prompts-estruturados" id="toc-prompts-estruturados" class="nav-link" data-scroll-target="#prompts-estruturados"><span class="header-section-number">6</span> Prompts Estruturados</a>
+  <ul class="collapse">
+  <li><a href="#agente-de-inteligência-de-reviews-1" id="toc-agente-de-inteligência-de-reviews-1" class="nav-link" data-scroll-target="#agente-de-inteligência-de-reviews-1"><span class="header-section-number">6.1</span> Agente de Inteligência de Reviews</a></li>
+  <li><a href="#agente-de-risco-de-entrega-1" id="toc-agente-de-risco-de-entrega-1" class="nav-link" data-scroll-target="#agente-de-risco-de-entrega-1"><span class="header-section-number">6.2</span> Agente de Risco de Entrega</a></li>
+  <li><a href="#agente-de-performance-de-vendedores-1" id="toc-agente-de-performance-de-vendedores-1" class="nav-link" data-scroll-target="#agente-de-performance-de-vendedores-1"><span class="header-section-number">6.3</span> Agente de Performance de Vendedores</a></li>
+  <li><a href="#agente-de-atendimento-ao-cliente-1" id="toc-agente-de-atendimento-ao-cliente-1" class="nav-link" data-scroll-target="#agente-de-atendimento-ao-cliente-1"><span class="header-section-number">6.4</span> Agente de Atendimento ao Cliente</a></li>
+  </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="mapa_agentes_ia.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </div>
@@ -2584,6 +2591,182 @@ Necessidade de limites claros de escalonamento para evitar frustração em casos
 <h2 data-number="5" class="anchored" data-anchor-id="como-os-agentes-se-conectam"><span class="header-section-number">5</span> Como os agentes se conectam</h2>
 <p>Dados (pedidos, entregas, reviews, vendedores) │ ├── Agente de Inteligência de Reviews ──► resumo/causa raiz ──► Qualidade/CX │ ──► Agente de Performance de Vendedores │ ├── Agente de Performance de Vendedores ──► score de risco ──► Marketplace/Seller Success (ação de gestão) │ └─► score de risco ──► Agente de Risco de Entrega (sinal preditivo) │ └── Agente de Risco de Entrega ──► alerta ──► Agente de Atendimento ao Cliente ──► cliente final └─ alerta ──► Logística/Operações</p>
 <p>Ponto-chave do fluxo: <strong>só o Agente de Risco de Entrega fala com o cliente</strong> (via Agente de Atendimento). O Agente de Performance de Vendedores atua nos bastidores — gestão de vendedores e alimentação de sinal para o Agente 2 — nunca expondo ao cliente o histórico de um vendedor específico.</p>
+</section>
+<section id="prompts-estruturados" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="prompts-estruturados"><span class="header-section-number">6</span> Prompts Estruturados</h2>
+<p>Os prompts a seguir apresentam exemplos iniciais de instruções que poderiam ser utilizadas pelos agentes propostos, considerando seus objetivos de negócio, os dados disponíveis e os resultados esperados.</p>
+<section id="agente-de-inteligência-de-reviews-1" class="level3" data-number="6.1">
+<h3 data-number="6.1" class="anchored" data-anchor-id="agente-de-inteligência-de-reviews-1"><span class="header-section-number">6.1</span> Agente de Inteligência de Reviews</h3>
+<p><strong>Objetivo do prompt</strong></p>
+<p>Identificar os principais motivos de satisfação ou insatisfação dos clientes a partir das avaliações e comentários.</p>
+<p><strong>Contexto fornecido ao agente</strong></p>
+<ul>
+<li>Nota da avaliação.</li>
+<li>Comentário do cliente.</li>
+<li>Dados do pedido.</li>
+<li>Produto e categoria.</li>
+<li>Vendedor.</li>
+<li>Informações de entrega.</li>
+<li>Data do pedido.</li>
+</ul>
+<p><strong>Instrução principal</strong></p>
+<pre class="text"><code>Você é o Agente de Inteligência de Reviews da Olist.
+
+Analise os reviews fornecidos e identifique os principais motivos
+relacionados à satisfação ou insatisfação dos clientes.
+
+Classifique cada ocorrência de acordo com a causa principal,
+considerando categorias como entrega, produto, atendimento,
+preço ou outros motivos relevantes.
+
+Identifique também padrões recorrentes por período, categoria
+ou vendedor.
+
+Não invente informações que não estejam disponíveis nos dados.
+Quando não for possível identificar a causa, classifique-a como
+indeterminada.
+
+Priorize os problemas que apresentem maior recorrência ou impacto
+para a experiência do cliente.</code></pre>
+<p><strong>Resultado esperado</strong></p>
+<ul>
+<li>Principais causas de insatisfação.</li>
+<li>Classificação dos problemas.</li>
+<li>Padrões recorrentes.</li>
+<li>Categorias ou vendedores mais impactados.</li>
+<li>Resumo executivo dos principais achados.</li>
+<li>Sugestões de pontos que merecem investigação.</li>
+</ul>
+</section>
+<section id="agente-de-risco-de-entrega-1" class="level3" data-number="6.2">
+<h3 data-number="6.2" class="anchored" data-anchor-id="agente-de-risco-de-entrega-1"><span class="header-section-number">6.2</span> Agente de Risco de Entrega</h3>
+<p><strong>Objetivo do prompt</strong></p>
+<p>Identificar pedidos com maior probabilidade de atraso e apoiar ações preventivas.</p>
+<p><strong>Contexto fornecido ao agente</strong></p>
+<ul>
+<li>Origem e destino.</li>
+<li>Vendedor.</li>
+<li>Categoria.</li>
+<li>Quantidade de itens.</li>
+<li>Frete.</li>
+<li>Prazo estimado.</li>
+<li>Histórico de entregas.</li>
+<li>Período do pedido.</li>
+</ul>
+<p><strong>Instrução principal</strong></p>
+<pre class="text"><code>Você é o Agente de Risco de Entrega da Olist.
+
+Analise as informações do pedido e estime o nível de risco
+de atraso da entrega.
+
+Considere a origem e o destino, o vendedor, a categoria,
+a quantidade de itens, o frete, o prazo estimado, o histórico
+de entregas e o período em que o pedido foi realizado.
+
+Classifique o risco como baixo, médio ou alto e explique
+quais fatores contribuíram para essa classificação.
+
+Quando o risco for médio ou alto, indique uma ação preventiva
+que possa ser avaliada pelas áreas de Logística ou Atendimento.
+
+O nível de risco representa uma estimativa e não deve ser tratado
+como certeza.</code></pre>
+<p><strong>Resultado esperado</strong></p>
+<ul>
+<li>Identificação do pedido.</li>
+<li>Nível de risco: baixo, médio ou alto.</li>
+<li>Principais fatores associados ao risco.</li>
+<li>Ação preventiva recomendada.</li>
+<li>Indicação de quando é necessário acompanhamento humano.</li>
+</ul>
+</section>
+<section id="agente-de-performance-de-vendedores-1" class="level3" data-number="6.3">
+<h3 data-number="6.3" class="anchored" data-anchor-id="agente-de-performance-de-vendedores-1"><span class="header-section-number">6.3</span> Agente de Performance de Vendedores</h3>
+<p><strong>Objetivo do prompt</strong></p>
+<p>Identificar vendedores com sinais relevantes de risco operacional e sugerir oportunidades de melhoria.</p>
+<p><strong>Contexto fornecido ao agente</strong></p>
+<ul>
+<li>Volume de pedidos.</li>
+<li>Taxa de atraso.</li>
+<li>Nota média.</li>
+<li>Volume de vendas.</li>
+<li>Categorias comercializadas.</li>
+<li>Comentários dos clientes.</li>
+<li>Histórico do vendedor.</li>
+<li>Comparação com o marketplace.</li>
+</ul>
+<p><strong>Instrução principal</strong></p>
+<pre class="text"><code>Você é o Agente de Performance de Vendedores da Olist.
+
+Analise os indicadores de desempenho fornecidos e identifique
+vendedores que apresentem sinais relevantes de risco operacional.
+
+Considere volume de pedidos, taxa de atraso, nota média dos
+clientes, recorrência de reclamações e histórico do vendedor.
+
+Sempre considere o volume de pedidos antes de classificar um
+vendedor como crítico, evitando conclusões baseadas em amostras
+pequenas.
+
+Quando houver evidências suficientes, utilize os comentários dos
+clientes para identificar possíveis causas dos problemas.
+
+Para cada vendedor identificado, apresente uma recomendação de
+melhoria para avaliação da equipe de Seller Success.
+
+Não aplique penalizações automaticamente e não trate uma
+classificação de risco como prova de falha do vendedor.</code></pre>
+<p><strong>Resultado esperado</strong></p>
+<ul>
+<li>Vendedor identificado.</li>
+<li>Indicadores relevantes.</li>
+<li>Sinal de risco.</li>
+<li>Possíveis causas.</li>
+<li>Comparação com referências do marketplace.</li>
+<li>Recomendação de melhoria.</li>
+<li>Indicação de necessidade de avaliação humana.</li>
+</ul>
+</section>
+<section id="agente-de-atendimento-ao-cliente-1" class="level3" data-number="6.4">
+<h3 data-number="6.4" class="anchored" data-anchor-id="agente-de-atendimento-ao-cliente-1"><span class="header-section-number">6.4</span> Agente de Atendimento ao Cliente</h3>
+<p><strong>Objetivo do prompt</strong></p>
+<p>Responder dúvidas relacionadas aos pedidos e encaminhar situações que exigem avaliação humana.</p>
+<p><strong>Contexto fornecido ao agente</strong></p>
+<ul>
+<li>ID do pedido.</li>
+<li>Status do pedido.</li>
+<li>Prazo estimado.</li>
+<li>Informações de entrega.</li>
+<li>Pagamento.</li>
+<li>Produto.</li>
+<li>Nível de risco de atraso.</li>
+<li>Políticas da Olist.</li>
+</ul>
+<p><strong>Instrução principal</strong></p>
+<pre class="text"><code>Você é o Agente de Atendimento ao Cliente da Olist.
+
+Responda à solicitação do cliente utilizando somente as
+informações disponíveis sobre o pedido e as políticas da Olist.
+
+Considere o status atual do pedido, o prazo estimado de entrega
+e, quando disponível, o nível de risco de atraso.
+
+Forneça uma resposta clara, objetiva e cordial.
+
+Não invente informações ou prazos.
+
+Quando a situação envolver fraude, conflito complexo, solicitação
+excepcional de reembolso, produto incorreto ou reclamação grave,
+encaminhe o caso para atendimento humano.</code></pre>
+<p><strong>Resultado esperado</strong></p>
+<ul>
+<li>Situação atual do pedido.</li>
+<li>Prazo disponível.</li>
+<li>Orientação ao cliente.</li>
+<li>Resposta clara e cordial.</li>
+<li>Encaminhamento para atendimento humano quando necessário.</li>
+</ul>
+</section>
 </section>
 
 </main>
