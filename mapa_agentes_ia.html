@@ -2283,48 +2283,41 @@ text-align: left;
 <section id="contexto" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="contexto"><span class="header-section-number">1</span> Contexto</h2>
 <p>A análise exploratória do dataset Olist (<code>notebooks/analise_exploratoria.ipynb</code>) revelou sete sinais de negócio fortes o suficiente para justificar, com dados, a priorização de agentes de IA:</p>
-<ol type="1">
-<li><p><strong>Atraso logístico é o maior driver de insatisfação, com relação dose-resposta clara.</strong> A nota média de review cai progressivamente conforme o atraso aumenta:</p>
+<p>1.<strong>Atraso logístico está associado à redução da satisfação dos clientes.</strong> A nota média de review diminui progressivamente conforme aumenta a faixa de atraso:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
 <th>Faixa de atraso</th>
-<th>Pedidos</th>
-<th>Nota média</th>
+<th style="text-align: right;">Pedidos</th>
+<th style="text-align: right;">Nota média</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>No prazo / adiantado</td>
-<td>89.939</td>
-<td>4,29</td>
+<td style="text-align: right;">89.939</td>
+<td style="text-align: right;">4,29</td>
 </tr>
 <tr class="even">
-<td>Atraso leve (1-3 dias)</td>
-<td>1.856</td>
-<td>3,29</td>
+<td>Atraso leve (1–3 dias)</td>
+<td style="text-align: right;">1.856</td>
+<td style="text-align: right;">3,29</td>
 </tr>
 <tr class="odd">
-<td>Atraso moderado (4-7 dias)</td>
-<td>1.756</td>
-<td>2,10</td>
+<td>Atraso moderado (4–7 dias)</td>
+<td style="text-align: right;">1.756</td>
+<td style="text-align: right;">2,10</td>
 </tr>
 <tr class="even">
-<td>Atraso severo (8+ dias)</td>
-<td>2.797</td>
-<td>1,70</td>
+<td>Atraso severo (8 ou mais dias)</td>
+<td style="text-align: right;">2.797</td>
+<td style="text-align: right;">1,70</td>
 </tr>
 </tbody>
 </table>
-<p>Não é um efeito de limiar único — cada faixa adicional de atraso derruba a nota de forma consistente, o que reforça que qualquer intervenção que reduza o atraso, mesmo que não o elimine totalmente, já tem efeito direto mensurável na satisfação. O boxplot de atraso por nota reforça essa leitura de outra forma: <strong>apenas na nota 1 o terceiro quartil (Q3) do atraso é positivo (+6 dias)</strong> — ou seja, só entre quem deu nota 1 existe uma parcela relevante (25%+) que de fato recebeu o pedido atrasado; nas notas 2 a 5, mesmo no pior quartil a entrega ainda ocorre antes do prazo, sinalizando que, para notas intermediárias, outros fatores (além do atraso) também pesam na insatisfação.</p>
-<p><em>Nota metodológica:</em> a nota de review é uma variável <strong>ordinal</strong> (1 a 5), não contínua, então a correlação de Pearson (-0,27) não é a métrica mais adequada — ela assume distância igual entre categorias. Recalculando com <strong>Spearman</strong> (baseada em ranks, correta para dado ordinal e robusta a outliers), a correlação é de <strong>-0,18</strong>: mais moderada, mas confirma a mesma direção e reforça que a tabela de faixas acima — e não um coeficiente único — é a evidência mais honesta da relação.</p></li>
-<li><p><strong>O problema concentra-se geograficamente e em operações interestaduais.</strong> Estados como AL, MA, SE, PI e CE têm taxa de atraso 2-3x acima da média (6,8%); entregas entre estados diferentes atrasam quase o dobro das intraestaduais (7,8% vs 4,4%).</p></li>
-<li><p><strong>A base de vendedores é extremamente concentrada e heterogênea.</strong> Os 10% maiores vendedores (309 de 3.095) respondem por 67,5% da receita, e alguns vendedores com volume relevante chegam a 27-50% de taxa de atraso — um risco operacional e de marca que hoje não é monitorado de forma ativa.</p></li>
-<li><p><strong>Existe um volume relevante de texto não estruturado já sendo gerado pelo cliente.</strong> 41,3% dos reviews trazem comentário escrito, e 14,7% das notas são negativas (~14,6 mil reviews) — um volume grande demais para triagem manual, mas pequeno demais (e repetitivo o suficiente) para não ser automatizável com IA Generativa.</p></li>
-<li><p><strong>O tempo total de entrega pesa mais na nota do que o cumprimento da promessa de prazo.</strong> Uma análise multivariada comparando a força de associação (Spearman) de 12 variáveis com a nota de review mostra que <code>delivery_days</code> (tempo total compra→cliente, -0,234) tem associação <strong>mais forte</strong> do que <code>delay_days</code> (desvio do prazo prometido, -0,176). Em seguida aparecem nº de itens no pedido (-0,108), valor do frete (-0,089) e entrega no mesmo estado do vendedor (+0,060). Preço, parcelamento, peso do produto e qualidade do anúncio (fotos/descrição) têm efeito desprezível (|Spearman| &lt; 0,03). Isso é um achado prático importante: <strong>reduzir o tempo absoluto de espera importa tanto ou mais do que apenas “cumprir o prometido”</strong> — um pedido que chega dentro do prazo mas demora muito ainda machuca a satisfação.</p></li>
-<li><p><strong>A Olist estima prazos de entrega de forma muito conservadora.</strong> O boxplot do desvio entre a data prometida e a data real mostra mediana de <strong>-12 dias</strong> — ou seja, metade dos pedidos chega 12 dias ou mais <em>antes</em> do prazo informado ao cliente (P75 = -7 dias; P90 = -2 dias). A taxa real de atraso é de apenas 6,8%, mas a promessa de prazo é folgada o suficiente para, possivelmente, reduzir conversão (prazos longos demais no checkout) sem necessidade — um ponto de melhoria independente da redução de atraso em si.</p></li>
-<li><p><strong>A taxa de atraso dispara em picos sazonais de demanda, não é constante ao longo do ano.</strong> A série mensal de pedidos atrasados mostra que a operação não escala bem com picos de volume: <strong>nov/2017 (Black Friday)</strong> teve o maior volume de vendas do período (R$ 1,01 milhão, 7.451 pedidos) e taxa de atraso de <strong>12,4%</strong> — quase o dobro da média geral (6,8%). Fev/2018 (14,1%) e, principalmente, <strong>mar/2018 (19,0%)</strong> foram os piores meses de toda a série. Ou seja, o risco de atraso não depende só de rota/vendedor — depende de <strong>quando</strong> o pedido é feito, e a operação logística atual não absorve bem picos de demanda.</p></li>
-</ol>
+<p>A relação observada é progressiva: quanto maior a faixa de atraso, menor a nota média registrada. Esse padrão sugere que iniciativas para reduzir o tempo de entrega e a frequência de atrasos podem contribuir para melhorar a experiência do cliente. Essa hipótese deverá ser validada pelo acompanhamento dos indicadores após a implementação das iniciativas.</p>
+<p>O boxplot do desvio entre a data prometida e a data real complementa essa análise. Na nota 1, o terceiro quartil (Q3) do desvio é positivo (+6 dias), indicando que pelo menos aproximadamente 25% dos pedidos desse grupo tiveram atraso de seis dias ou mais. Nas notas de 2 a 5, o terceiro quartil permanece negativo, sugerindo que pelo menos aproximadamente 75% dos pedidos desses grupos chegaram antes do prazo prometido. Portanto, o atraso não explica sozinho todas as avaliações negativas.</p>
+<p><em>Nota metodológica:</em> a nota de review é uma variável ordinal, de 1 a 5. A correlação de Spearman (-0,18) é mais apropriada para avaliar a associação monotônica entre atraso e nota, pois utiliza os postos das observações. A correlação de Pearson (-0,27) também foi calculada, mas deve ser interpretada com cautela. A comparação das notas médias por faixa de atraso complementa os coeficientes e facilita a interpretação do padrão observado. 2. <strong>O problema concentra-se geograficamente e em operações interestaduais.</strong> Estados como AL, MA, SE, PI e CE têm taxa de atraso 2-3x acima da média (6,8%); entregas entre estados diferentes atrasam quase o dobro das intraestaduais (7,8% vs 4,4%). 3. <strong>A base de vendedores é extremamente concentrada e heterogênea.</strong> Os 10% maiores vendedores (309 de 3.095) respondem por 67,5% da receita, e alguns vendedores com volume relevante chegam a 27-50% de taxa de atraso — indicando uma oportunidade relevante para monitoramento estruturado do risco operacional associado aos vendedores. 4. <strong>As avaliações oferecem uma oportunidade de análise automatizada de texto.</strong> No período analisado, 41,3% dos reviews contêm comentários escritos, enquanto 14,7% das avaliações receberam notas 1 ou 2 (aproximadamente 14,6 mil avaliações). Esses dados indicam uma oportunidade para utilizar IA Generativa na classificação dos comentários e na identificação de padrões recorrentes. A viabilidade e o ganho em relação à triagem manual deverão ser avaliados na operação. 5. <strong>O tempo total de entrega pesa mais na nota do que o cumprimento da promessa de prazo.</strong> Uma análise exploratória comparando, por meio da correlação de Spearman, a associação entre 12 variáveis e a nota de review indica que que <code>delivery_days</code> (tempo total compra→cliente, -0,234) tem associação <strong>mais forte</strong> do que <code>delay_days</code> (desvio do prazo prometido, -0,176). Em seguida aparecem nº de itens no pedido (-0,108), valor do frete (-0,089) e entrega no mesmo estado do vendedor (+0,060). Preço, parcelamento, peso do produto e qualidade do anúncio (fotos/descrição) apresentam associações muito fracas com a nota de review (|Spearman| &lt; 0,03). Isso é um achado prático importante: <strong>reduzir o tempo absoluto de espera importa tanto ou mais do que apenas “cumprir o prometido”</strong> — um pedido que chega dentro do prazo mas demora muito ainda machuca a satisfação. 6. <strong>A Olist estima prazos de entrega de forma muito conservadora.</strong> O boxplot do desvio entre a data prometida e a data real mostra mediana de <strong>-12 dias</strong> — ou seja, metade dos pedidos chega 12 dias ou mais <em>antes</em> do prazo informado ao cliente (P75 = -7 dias; P90 = -2 dias). A taxa real de atraso é de apenas 6,8%, mas a promessa de prazo é folgada o suficiente para, possivelmente, reduzir conversão (prazos longos demais no checkout) sem necessidade — um ponto de melhoria independente da redução de atraso em si. 7. <strong>A taxa de atraso dispara em picos sazonais de demanda, não é constante ao longo do ano.</strong> A série mensal de pedidos atrasados mostra que a operação não escala bem com picos de volume: <strong>nov/2017 (Black Friday)</strong> teve o maior volume de vendas do período (R$ 1,01 milhão, 7.451 pedidos) e taxa de atraso de <strong>12,4%</strong> — quase o dobro da média geral (6,8%). Fev/2018 (14,1%) e, principalmente, <strong>mar/2018 (19,0%)</strong> foram os piores meses de toda a série. Ou seja, o risco de atraso não depende só de rota/vendedor — depende de <strong>quando</strong> o pedido é feito, Os resultados sugerem que o período em que o pedido é realizado também deve ser considerado na análise do risco de atraso, pois as taxas observadas variaram ao longo dos meses. Essa associação indica uma oportunidade para investigar a relação entre sazonalidade, volume de pedidos e desempenho das entregas.</p>
 <p>Esses sete sinais mapeiam diretamente para os desafios de negócio citados pela Olist (experiência do cliente, eficiência logística, retenção, análise de reviews, apoio à decisão) e orientam a escolha dos agentes propostos abaixo.</p>
 </section>
 <section id="mapa-de-agentes-de-ia" class="level2" data-number="2">
@@ -2355,7 +2348,7 @@ text-align: left;
 <tr class="even">
 <td>2</td>
 <td>Risco de Entrega</td>
-<td>Atraso é o maior driver de insatisfação</td>
+<td>Atrasos estão associados à redução da satisfação, com queda progressiva da nota média conforme aumenta o atraso</td>
 <td>Logística / Operações</td>
 </tr>
 <tr class="odd">
@@ -2367,7 +2360,7 @@ text-align: left;
 <tr class="even">
 <td>4</td>
 <td>Atendimento ao Cliente</td>
-<td>Volume de pedidos (~100 mil) gera alto custo de suporte</td>
+<td>Volume de pedidos (~100 mil) cria oportunidade para automatizar consultas recorrentes sobre pedidos e entregas</td>
 <td>Atendimento ao Cliente</td>
 </tr>
 </tbody>
@@ -2385,7 +2378,7 @@ Ler, classificar e resumir automaticamente os comentários de reviews — especi
 </dd>
 <dt><strong>Problema resolvido</strong></dt>
 <dd>
-Hoje ~14,6 mil reviews negativos por período analisado trazem comentário em texto livre, mas não há como ler e categorizar esse volume manualmente de forma consistente. Problemas recorrentes (ex.: atraso, divergência de produto) só são percebidos tarde, de forma reativa.
+No período analisado, aproximadamente 14,6 mil avaliações receberam notas 1 ou 2, enquanto 41,3% do conjunto de reviews contém comentário escrito. A análise manual desse volume de texto pode dificultar a identificação consistente e tempestiva de problemas recorrentes. O agente proposto busca classificar os comentários e consolidar os principais motivos de satisfação ou insatisfação para apoiar a priorização de ações.
 </dd>
 <dt><strong>Dado que evidencia</strong></dt>
 <dd>
@@ -2414,8 +2407,13 @@ Estimar, no momento da compra ou do despacho, o tempo total de entrega esperado 
 </dd>
 <dt><strong>Problema resolvido</strong></dt>
 <dd>
-Atrasos hoje são descobertos pelo cliente (e pela Olist) somente quando já ocorreram, sem mecanismo preditivo. Isso transforma um problema operacional evitável em um problema de satisfação já consumado — a nota cai de forma consistente conforme o atraso aumenta (4,29 → 3,29 → 2,10 → 1,70). Mais relevante ainda: a análise multivariada mostra que o tempo total de entrega (<code>delivery_days</code>) está mais associado à nota (Spearman -0,234) do que o desvio em relação ao prazo prometido (<code>delay_days</code>, -0,176) — ou seja, otimizar apenas para “não atrasar” deixa valor na mesa. Pedidos com mais itens (-0,108) e frete mais caro (-0,089) agravam o problema. Adicionalmente, o prazo hoje comunicado ao cliente é folgado demais (mediana de 12 dias de margem), o que pode custar conversão no checkout sem necessidade. A operação também não escala bem em picos sazonais: a taxa de atraso subiu para 12,4% em nov/2017 (Black Friday, maior volume do período) e chegou a 19,0% em mar/2018 — quase 3x a média geral — mostrando que o risco de atraso depende também de <strong>quando</strong> o pedido é feito, não só de rota e vendedor.
+Os dados históricos mostram que 6,8% dos pedidos analisados tiveram atraso e que a nota média diminui conforme aumenta a faixa de atraso. Esse cenário indica uma oportunidade para desenvolver mecanismos preditivos que identifiquem pedidos com maior risco e permitam avaliar ações preventivas antes da conclusão da entrega.
 </dd>
+</dl>
+<p>A análise exploratória de associações indica que o tempo total de entrega (<code>delivery_days</code>) apresenta associação mais forte com a nota (Spearman -0,234) do que o desvio em relação ao prazo prometido (<code>delay_days</code>, -0,176). O número de itens (-0,108) e o valor do frete (-0,089) também apresentam associações negativas, de menor magnitude. Esses resultados sugerem que a análise de risco pode considerar tanto o tempo total de espera quanto o cumprimento do prazo informado.</p>
+<p>Adicionalmente, a diferença entre a data prometida e a data real apresentou mediana de -12 dias, indicando que os pedidos frequentemente chegaram antes do prazo informado. Esse resultado sugere uma oportunidade para avaliar a precisão dos prazos comunicados ao cliente.</p>
+<p>A taxa de atraso variou entre os meses analisados, chegando a 12,4% em novembro de 2017 e a 19,0% em março de 2018, diante de uma média geral de 6,8%. A sazonalidade deve, portanto, ser considerada como uma variável potencialmente relevante na análise do risco.</p>
+<dl>
 <dt><strong>Dado que evidencia</strong></dt>
 <dd>
 Taxa de atraso média de 6,8% (10,6 dias de atraso médio quando ocorre); concentração em estados específicos (AL 21,4%, MA 17,4%, SE 15,2%); entregas interestaduais com quase o dobro da taxa de atraso e do tempo médio de entrega das intraestaduais. Tempo de entrega com mediana de 10 dias mas P90 de 23 dias (cauda longa de outliers); desvio do prazo estimado com mediana de -12 dias, evidenciando folga sistemática na promessa de prazo. Correlação de Spearman com a nota: delivery_days -0,234 (mais forte), delay_days -0,176, nº de itens -0,108, frete -0,089, mesmo estado +0,060. Série mensal: taxa de atraso de 12,4% em nov/2017 e 19,0% em mar/2018, vs. média geral de 6,8%.
@@ -2426,11 +2424,14 @@ Time de Logística/Operações (prioriza pedidos de alto risco), Atendimento ao 
 </dd>
 <dt><strong>Benefício esperado</strong></dt>
 <dd>
-Redução de reviews negativos associados a atraso via comunicação proativa e priorização operacional; possibilidade de renegociar rota/transportadora nas combinações estado-origem × estado-destino de maior risco antes que o atraso se concretize; e ganho potencial de conversão ao comunicar prazos de entrega mais curtos e precisos (sem abrir mão de margem de segurança) nas rotas de baixo risco.
+Potencial redução de avaliações negativas associadas a problemas de entrega, por meio de comunicação proativa e priorização operacional; identificação de rotas com maior risco para investigação e planejamento; e possibilidade de melhorar a precisão dos prazos comunicados ao cliente. Esses benefícios deverão ser validados após a implementação, com acompanhamento dos indicadores operacionais e de satisfação.
+</dd>
+<dd>
+Estimativa de prazo ou data de entrega, quando houver dados suficientes para calculá-la.
 </dd>
 <dt><strong>Riscos</strong></dt>
 <dd>
-Qualidade da previsão depende de dados históricos representativos; falsos positivos podem gerar comunicação desnecessária e desgastar a confiança do cliente no alerta.
+Qualidade da previsão depende de dados históricos representativos; falsos positivos podem gerar comunicação desnecessária e desgastar a confiança do cliente no alerta. A previsão em tempo real dependerá da disponibilidade de dados operacionais atualizados, incluindo o status do pedido e os eventos de transporte. O dataset histórico permite identificar associações e orientar o desenvolvimento inicial, mas o desempenho preditivo deverá ser validado com dados não utilizados no treinamento e com acompanhamento na operação.
 </dd>
 </dl>
 </section>
@@ -2494,11 +2495,11 @@ Responder automaticamente às dúvidas mais frequentes do cliente sobre status d
 </dd>
 <dt><strong>Problema resolvido</strong></dt>
 <dd>
-Com ~100 mil pedidos no período, a maior parte das interações de suporte provavelmente é repetitiva e de baixa complexidade (status de entrega, prazo, forma de pagamento), consumindo capacidade humana que poderia ser direcionada a casos mais complexos ou sensíveis.
+O volume de aproximadamente 100 mil pedidos no período analisado representa uma oportunidade para automatizar consultas recorrentes sobre pedidos, pagamentos e entregas. A quantidade de chamados, o custo atual do atendimento e a proporção de solicitações repetitivas não são medidos diretamente pelo dataset e deverão ser avaliados na operação para dimensionar o benefício potencial da solução.
 </dd>
 <dt><strong>Dado que evidencia</strong></dt>
 <dd>
-97% dos pedidos são efetivamente entregues (baixo volume de exceções “duras”), mas 6,8% chegam atrasados e geram queda abrupta de satisfação — indicando um fluxo previsível e de alto volume de perguntas sobre “cadê meu pedido”.
+Foram registrados aproximadamente 99 mil pedidos no período analisado, dos quais 97% foram entregues e 6,8% tiveram atraso. A análise também identificou uma associação entre maior atraso e menor nota média de review. Esses dados sustentam a oportunidade de oferecer informações mais contextualizadas sobre pedidos e entregas, mas não permitem estimar diretamente o volume de chamados ou a redução de custos do atendimento.
 </dd>
 <dt><strong>Usuários envolvidos</strong></dt>
 <dd>
@@ -2575,8 +2576,6 @@ usuários que podem utilizar seus resultados.
 | **Risco de Entrega** | Origem e destino; vendedor; categoria; quantidade de itens; frete; prazo estimado; histórico de entregas; período do pedido | Nível de risco de atraso; fatores associados ao risco; alertas preventivos; recomendação de ação | Logística; Operações; Atendimento ao Cliente |
 | **Performance de Vendedores** | Volume de pedidos; taxa de atraso; avaliações; comentários; histórico do vendedor; comparação com o marketplace | Indicadores de performance; sinais de risco operacional; possíveis causas; recomendações de melhoria | Seller Success; Marketplace; gestão de vendedores |
 | **Atendimento ao Cliente** | Pedido; status; prazo estimado; pagamento; produto; sinais de risco de entrega; informações provenientes dos demais agentes; políticas e base de conhecimento | Resposta contextualizada ao cliente; orientação; identificação de casos críticos; escalonamento para atendimento humano | Cliente final; Atendimento ao Cliente |
-
-## Como os agentes se conectam
 
 
 ## Como os agentes se conectam
@@ -2786,6 +2785,7 @@ classificação de risco como prova de falha do vendedor.</code></pre>
 <li>Produto.</li>
 <li>Nível de risco de atraso.</li>
 <li>Políticas da Olist.</li>
+<li>Base de conhecimento e políticas atualizadas, disponibilizadas como fontes operacionais complementares.</li>
 </ul>
 <p><strong>Instrução principal</strong></p>
 <pre class="text"><code>Você é o Agente de Atendimento ao Cliente da Olist.
