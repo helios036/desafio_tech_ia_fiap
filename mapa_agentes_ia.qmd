@@ -93,7 +93,7 @@ agentes propostos abaixo.
 
 | # | Agente | Dor de negócio endereçada | Usuário principal |
 |---|--------|---------------------------|--------------------|
-| 1 | Inteligência de Reviews | 14,7% de notas negativas, triagem manual inviável | CX / Qualidade |
+| 1 | Inteligência de Reviews | 14,7% de notas negativas, 14,7% das avaliações receberam notas 1 ou 2; 41,3% dos reviews contêm comentários escritos | CX / Qualidade |
 | 2 | Risco de Entrega | Atrasos estão associados à redução da satisfação, com queda progressiva da nota média conforme aumenta o atraso | Logística / Operações |
 | 3 | Performance de Vendedores | Concentração de receita + atraso desigual entre sellers | Marketplace / Seller Success |
 | 4 | Atendimento ao Cliente | Volume de pedidos (~100 mil) cria oportunidade para automatizar consultas recorrentes sobre pedidos e entregas | Atendimento ao Cliente |
@@ -121,8 +121,9 @@ identificação consistente e tempestiva de problemas recorrentes. O agente prop
 comentários e consolidar os principais motivos de satisfação ou insatisfação para apoiar a priorização de ações.
 
 **Dado que evidencia**
-: 14,7% de notas 1-2; 41,3% dos reviews com comentário; termos mais frequentes em reviews negativos —
-  "entrega", "prazo", "contato", "qualidade" — confirmando que atraso e comunicação dominam as queixas.
+: 14,7% das avaliações receberam notas 1 ou 2, e 41,3% dos reviews contêm comentários escritos. Entre os termos 
+frequentes nos comentários negativos aparecem referências a entrega, prazo, contato e qualidade. Esses termos podem 
+orientar a classificação inicial dos comentários, mas precisam ser interpretados no contexto de cada avaliação.
 
 **Usuários envolvidos**
 : Time de Qualidade/CX (consome os resumos), gestão de categorias e vendedores (recebe alertas sobre
@@ -179,12 +180,14 @@ de uma média geral de 6,8%. A sazonalidade deve, portanto, ser considerada como
   para comunicação proativa), Time Comercial/Produto (ajusta a promessa de prazo no checkout),
   cliente final (notificação antecipada em vez de surpresa negativa, e prazo mais realista na compra).
 
-**Benefício esperado**
-: Potencial redução de avaliações negativas associadas a problemas de entrega, por meio de comunicação proativa
-e priorização operacional; identificação de rotas com maior risco para investigação e planejamento; e possibilidade de
-melhorar a precisão dos prazos comunicados ao cliente. Esses benefícios deverão ser validados após a implementação, com
-acompanhamento dos indicadores operacionais e de satisfação.
-: Estimativa de prazo ou data de entrega, quando houver dados suficientes para calculá-la.
+**Resultado esperado**
+- Identificação do pedido.
+- Nível de risco: baixo, médio ou alto.
+- Principais fatores associados ao risco.
+- Ação preventiva recomendada.
+- Estimativa de prazo ou data de entrega, quando houver dados suficientes para calculá-la.
+- Indicação de quando é necessário acompanhamento humano.
+
 
 **Riscos**
 : Qualidade da previsão depende de dados históricos representativos; falsos positivos podem gerar
@@ -218,9 +221,9 @@ mas o desempenho preditivo deverá ser validado com dados não utilizados no tre
   revisão de parceria) para aprovação humana.
 
 **Problema resolvido**
-: A base de vendedores é muito concentrada e desigual — não há hoje um mecanismo sistemático e
-  contínuo de monitoramento que separe os vendedores estruturalmente problemáticos dos pontualmente
-  problemáticos, nem um processo que traduza "esse vendedor está mal" em uma ação concreta e justificada.
+: A base de vendedores apresenta concentração de receita e diferenças relevantes nas taxas históricas de atraso.
+Esse cenário indica uma oportunidade para estruturar o monitoramento do risco operacional por vendedor, distinguindo
+sinais recorrentes de possíveis variações pontuais e traduzindo os indicadores em recomendações justificadas para avaliação humana.
 
 **Dado que evidencia**
 : Os 10% maiores vendedores (309 de 3.095) geram 67,5% da receita; entre vendedores com volume
@@ -289,9 +292,9 @@ ou a redução de custos do atendimento.
   escalados), Logística (consome sinais do Agente de Risco de Entrega para enriquecer as respostas).
 
 **Benefício esperado**
-: Redução de custo e tempo de resposta no atendimento de baixa complexidade; experiência mais
-  consistente para o cliente; liberação da equipe humana para casos de maior criticidade (ex.: produto
-  errado, fraude, reclamações graves).
+: Potencial redução do tempo de resposta e do esforço dedicado a consultas recorrentes, além de maior consistência nas orientações 
+ao cliente e disponibilidade da equipe humana para casos complexos. O impacto sobre custos, tempo de atendimento e volume de escalonamentos 
+deverá ser medido após a implementação.
 
 **Riscos**
 : Necessidade de limites claros de escalonamento para evitar frustração em casos complexos;
