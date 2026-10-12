@@ -2241,7 +2241,13 @@ text-align: left;
   <li><a href="#agente-de-performance-de-vendedores" id="toc-agente-de-performance-de-vendedores" class="nav-link" data-scroll-target="#agente-de-performance-de-vendedores"><span class="header-section-number">3.3</span> Agente de Performance de Vendedores</a></li>
   <li><a href="#agente-de-atendimento-ao-cliente" id="toc-agente-de-atendimento-ao-cliente" class="nav-link" data-scroll-target="#agente-de-atendimento-ao-cliente"><span class="header-section-number">3.4</span> Agente de Atendimento ao Cliente</a></li>
   </ul></li>
-  <li><a href="#como-os-agentes-se-conectam" id="toc-como-os-agentes-se-conectam" class="nav-link" data-scroll-target="#como-os-agentes-se-conectam"><span class="header-section-number">4</span> Como os agentes se conectam</a></li>
+  <li><a href="#arquitetura-conceitual" id="toc-arquitetura-conceitual" class="nav-link" data-scroll-target="#arquitetura-conceitual"><span class="header-section-number">4</span> Arquitetura Conceitual</a>
+  <ul class="collapse">
+  <li><a href="#fontes-de-dados" id="toc-fontes-de-dados" class="nav-link" data-scroll-target="#fontes-de-dados"><span class="header-section-number">4.1</span> Fontes de dados</a></li>
+  <li><a href="#fluxo-conceitual" id="toc-fluxo-conceitual" class="nav-link" data-scroll-target="#fluxo-conceitual"><span class="header-section-number">4.2</span> Fluxo conceitual</a></li>
+  <li><a href="#entradas-saídas-e-usuários" id="toc-entradas-saídas-e-usuários" class="nav-link" data-scroll-target="#entradas-saídas-e-usuários"><span class="header-section-number">4.3</span> Entradas, saídas e usuários</a></li>
+  </ul></li>
+  <li><a href="#como-os-agentes-se-conectam" id="toc-como-os-agentes-se-conectam" class="nav-link" data-scroll-target="#como-os-agentes-se-conectam"><span class="header-section-number">5</span> Como os agentes se conectam</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="mapa_agentes_ia.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </div>
@@ -2506,20 +2512,78 @@ Necessidade de limites claros de escalonamento para evitar frustração em casos
 </dl>
 </section>
 </section>
-<section id="como-os-agentes-se-conectam" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="como-os-agentes-se-conectam"><span class="header-section-number">4</span> Como os agentes se conectam</h2>
-<pre><code>Dados (pedidos, entregas, reviews, vendedores)
-        │
-        ├── Agente de Inteligência de Reviews ──► resumo/causa raiz ──► Qualidade/CX
-        │                                                              ──► Agente de Performance de Vendedores
-        │
-        ├── Agente de Performance de Vendedores ──► score de risco ──► Marketplace/Seller Success (ação de gestão)
-        │                                        └─► score de risco ──► Agente de Risco de Entrega (sinal preditivo)
-        │
-        └── Agente de Risco de Entrega ──► alerta ──► Agente de Atendimento ao Cliente ──► cliente final
-                                          └─ alerta ──► Logística/Operações</code></pre>
+<section id="arquitetura-conceitual" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="arquitetura-conceitual"><span class="header-section-number">4</span> Arquitetura Conceitual</h2>
+<p>A arquitetura conceitual proposta integra as principais fontes de dados da Olist aos quatro agentes de IA definidos neste projeto. Os agentes possuem responsabilidades complementares e compartilham informações para apoiar as áreas de negócio.</p>
+<section id="fontes-de-dados" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="fontes-de-dados"><span class="header-section-number">4.1</span> Fontes de dados</h3>
+<ul>
+<li>Pedidos e status operacionais</li>
+<li>Clientes e localização</li>
+<li>Produtos e categorias</li>
+<li>Pagamentos</li>
+<li>Entregas e prazos</li>
+<li>Reviews e avaliações</li>
+<li>Vendedores</li>
+<li>Geolocalização</li>
+</ul>
+</section>
+<section id="fluxo-conceitual" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="fluxo-conceitual"><span class="header-section-number">4.2</span> Fluxo conceitual</h3>
+<pre><code>                FONTES DE DADOS</code></pre>
+<p>┌──────────────────────────────────────────────────────┐ │ Pedidos │ Clientes │ Produtos │ Pagamentos │ │ Entregas │ Reviews │ Vendedores │ Geolocalização │ └─────────────────────────┬────────────────────────────┘ │ ▼ ┌─────────────────────┐ │ AGENTES DE IA │ └─────────────────────┘ │ ┌─────────────────┼─────────────────┐ ▼ ▼ ▼ ┌────────────────┐ ┌────────────────┐ ┌────────────────┐ │ Inteligência │ │ Performance de │ │ Risco de │ │ de Reviews │ │ Vendedores │ │ Entrega │ └───────┬────────┘ └───────┬────────┘ └───────┬────────┘ │ │ │ ▼ ▼ ▼ ┌───────────────┐ ┌────────────────┐ ┌────────────────┐ │ Qualidade/CX │ │ Seller Success │ │ Logística/ │ └───────────────┘ │ / Marketplace │ │ Operações │ └────────────────┘ └───────┬────────┘ │ ▼ ┌────────────────┐ │ Atendimento ao │ │ Cliente │ └───────┬────────┘ │ ▼ ┌────────────────┐ │ Cliente final │ └────────────────┘</p>
+</section>
+<section id="entradas-saídas-e-usuários" class="level3" data-number="4.3">
+<h3 data-number="4.3" class="anchored" data-anchor-id="entradas-saídas-e-usuários"><span class="header-section-number">4.3</span> Entradas, saídas e usuários</h3>
+<p>A tabela a seguir apresenta, em visão executiva, as principais informações recebidas e produzidas por cada agente e as áreas que utilizam seus resultados.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Agente</th>
+<th>Entradas principais</th>
+<th>Saídas principais</th>
+<th>Usuários envolvidos</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Inteligência de Reviews</strong></td>
+<td>Notas e comentários dos clientes; dados do pedido; produto; categoria; vendedor; informações de entrega</td>
+<td>Classificação das causas de insatisfação; padrões recorrentes; resumos e alertas</td>
+<td>Qualidade/CX; gestão de categorias; gestão de vendedores; diretoria</td>
+</tr>
+<tr class="even">
+<td><strong>Risco de Entrega</strong></td>
+<td>Origem e destino; vendedor; categoria; quantidade de itens; frete; prazo estimado; histórico de entregas; período do pedido</td>
+<td>Nível de risco de atraso; fatores de risco; alertas preventivos; recomendação de ação</td>
+<td>Logística; Operações; Atendimento ao Cliente</td>
+</tr>
+<tr class="odd">
+<td><strong>Performance de Vendedores</strong></td>
+<td>Volume de pedidos; taxa de atraso; avaliações; comentários; histórico do vendedor; comparação com o marketplace</td>
+<td>Sinais de risco operacional; possíveis causas; recomendações de melhoria</td>
+<td>Seller Success; Marketplace; gestão de vendedores</td>
+</tr>
+<tr class="even">
+<td><strong>Atendimento ao Cliente</strong></td>
+<td>Pedido; status; prazo estimado; pagamento; produto; sinal de risco de entrega; políticas da Olist</td>
+<td>Resposta contextualizada ao cliente; orientação; escalonamento para atendimento humano</td>
+<td>Cliente final; Atendimento ao Cliente</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="como-os-agentes-se-conectam" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="como-os-agentes-se-conectam"><span class="header-section-number">5</span> Como os agentes se conectam</h2>
+<p>Dados (pedidos, entregas, reviews, vendedores) │ ├── Agente de Inteligência de Reviews ──► resumo/causa raiz ──► Qualidade/CX │ ──► Agente de Performance de Vendedores │ ├── Agente de Performance de Vendedores ──► score de risco ──► Marketplace/Seller Success (ação de gestão) │ └─► score de risco ──► Agente de Risco de Entrega (sinal preditivo) │ └── Agente de Risco de Entrega ──► alerta ──► Agente de Atendimento ao Cliente ──► cliente final └─ alerta ──► Logística/Operações</p>
 <p>Ponto-chave do fluxo: <strong>só o Agente de Risco de Entrega fala com o cliente</strong> (via Agente de Atendimento). O Agente de Performance de Vendedores atua nos bastidores — gestão de vendedores e alimentação de sinal para o Agente 2 — nunca expondo ao cliente o histórico de um vendedor específico.</p>
-<p>A arquitetura conceitual completa (fontes de dados, entradas/saídas e interações) será detalhada em documento específico, a ser incorporado ao relatório executivo final.</p>
 </section>
 
 </main>
