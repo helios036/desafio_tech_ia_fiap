@@ -71,7 +71,7 @@ por meio da correlação de Spearman, a associação entre 12 variáveis e a not
    do que `delay_days` (desvio do prazo prometido, -0,176). Em seguida aparecem nº de itens no pedido
    (-0,108), valor do frete (-0,089) e entrega no mesmo estado do vendedor (+0,060). Preço, parcelamento,
    peso do produto e qualidade do anúncio (fotos/descrição) apresentam associações muito fracas com a nota de review (|Spearman| < 0,03).
-   Isso é um achado prático importante: Isso sugere que o tempo total de espera merece atenção na estratégia logística, 
+   Isso é um achado prático importante: Sugere que o tempo total de espera merece atenção na estratégia logística, 
 além do cumprimento do prazo prometido. Como as correlações são observacionais, os resultados indicam associações e não 
 comprovam, isoladamente, o efeito causal de cada variável sobre a satisfação.
 6. **No conjunto histórico analisado, os prazos prometidos foram frequentemente superiores ao tempo efetivamente observado de entrega.** 
@@ -93,7 +93,7 @@ agentes propostos abaixo.
 
 | # | Agente | Dor de negócio endereçada | Usuário principal |
 |---|--------|---------------------------|--------------------|
-| 1 | Inteligência de Reviews | 14,7% de notas negativas, 14,7% das avaliações receberam notas 1 ou 2; 41,3% dos reviews contêm comentários escritos | CX / Qualidade |
+| 1 | Inteligência de Reviews | 14,7% das avaliações receberam notas 1 ou 2; 41,3% dos reviews contêm comentários escritos | CX / Qualidade |
 | 2 | Risco de Entrega | Atrasos estão associados à redução da satisfação, com queda progressiva da nota média conforme aumenta o atraso | Logística / Operações |
 | 3 | Performance de Vendedores | Concentração de receita + atraso desigual entre sellers | Marketplace / Seller Success |
 | 4 | Atendimento ao Cliente | Volume de pedidos (~100 mil) cria oportunidade para automatizar consultas recorrentes sobre pedidos e entregas | Atendimento ao Cliente |
